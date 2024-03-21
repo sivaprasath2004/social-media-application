@@ -1,0 +1,93 @@
+:root{
+    --background:#1e1a1a;
+    --color:white;
+    --invert:invert(100%);
+    --border:#ddd4d4;
+}
+.dark{
+    --color: #131313;
+    --background: white;
+    --invert:invert(0%);
+    --border:#534747;
+}
+main{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color:var(--background);
+}
+#profile_container{
+    display: flex;
+    flex-direction: column;
+    width: 3%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border-right: 2px solid var(--border);
+}
+#profile_container h1{
+    color: var(--color);
+}
+#FriendList_container{
+    width: 40%;
+    height: 100%;
+    border-right: 2px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+#FriendList_container #my_profile{
+    display: flex;
+    width: 100%;
+    height: 4rem;
+    padding: 10px;
+}
+#border_line{
+    width: 100%;
+    height: 2px;
+    background-color: var(--border);
+}
+#FriendList_container #my_profile #logo{
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border-radius: 100% ;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color);
+    color: var(--background);
+}
+#FriendList_container #my_profile #my_name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    color: var(--color);
+    padding-left: 15px;
+}
+#my_profile #my_name h1{
+    font-size: 1.4rem;
+}
+#my_profile #my_name h2{
+    font-size: 0.8rem;
+}
+#dynamic_container{
+    width: 60%;
+    height: 100%;
+}
+#profile_container #User_settings{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+#dark_Light_mode{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#User_settings img,#dark_Light_mode img{
+    width: 25px;
+    height: 25px;
+    filter: var(--invert);
+}
