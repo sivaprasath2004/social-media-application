@@ -1,8 +1,62 @@
 main{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100vh;
-    background-image: radial-gradient(circle at 29% 55%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 4%,transparent 4%, transparent 44%,transparent 44%, transparent 100%),radial-gradient(circle at 85% 89%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 51%,transparent 51%, transparent 52%,transparent 52%, transparent 100%),radial-gradient(circle at 6% 90%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 53%,transparent 53%, transparent 64%,transparent 64%, transparent 100%),radial-gradient(circle at 35% 75%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 6%,transparent 6%, transparent 98%,transparent 98%, transparent 100%),radial-gradient(circle at 56% 75%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 16%,transparent 16%, transparent 23%,transparent 23%, transparent 100%),radial-gradient(circle at 42% 0%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 3%,transparent 3%, transparent 26%,transparent 26%, transparent 100%),radial-gradient(circle at 29% 28%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 51%,transparent 51%, transparent 75%,transparent 75%, transparent 100%),radial-gradient(circle at 77% 21%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 35%,transparent 35%, transparent 55%,transparent 55%, transparent 100%),radial-gradient(circle at 65% 91%, hsla(329,0%,99%,0.05) 0%, hsla(329,0%,99%,0.05) 46%,transparent 46%, transparent 76%,transparent 76%, transparent 100%),linear-gradient(45deg, rgb(83, 91, 235),rgb(76, 11, 174));
+    background-image: linear-gradient(135deg, rgb(68, 202, 201) 0%,rgb(252, 255, 114) 100%);
+}
+#login{
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(255 255 255 / 9%);
+    gap: 1rem;
+    border: 4px solid #e5e4e4;
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    padding: 4rem;
+}
+#ball_1{
+    position: absolute;
+    z-index: 1;
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+}
+#ball_1::before{
+    content: "";
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    background: linear-gradient(#08ffe6,#fcd200);
+    z-index: 1;
+    border-radius: 100%;
+    translate: 9rem 3rem;
+}
+#login #input{
+    height: 40px;
+    width: 250px;
+    background-color: white;
+    border: none;
+    border-radius: 15px;
+}
+#input input{
+    width: 100%;
+    height: 100%;
+    padding-left:10px ;
+    border-radius: 15px;
+    border: none;
+}
+#Submit_form button{
+    height: 40px;
+    width: 150px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
 }
