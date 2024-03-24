@@ -10,7 +10,7 @@
     --invert:invert(0%);
     --border:#534747;
 }
-main{
+#home_page{
     display: flex;
     height: 100vh;
     width: 100%;
