@@ -18,7 +18,9 @@ const Login = () => {
         date.setDate(date.getDate() + 15);
         cookies.set("user_login_advantages",user._id,{path:'/',expires:date})
         cookies.set("user_name_advantages",user.user_name,{path:'/',expires:date}) 
+        if(user.Des){
         cookies.set("user_Description",user.Des,{path:'/',expires:date})
+        }
         console.log("clicked")
         navigation('/home')
     }

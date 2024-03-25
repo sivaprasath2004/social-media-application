@@ -2,13 +2,17 @@
     --background:#1e1a1a;
     --color:white;
     --invert:invert(100%);
-    --border:#ddd4d4;
+    --border:#515151;
+    --uninvert:invert(0%);
+    --input:#4b4848;
 }
 .dark{
     --color: #131313;
     --background: white;
     --invert:invert(0%);
     --border:#534747;
+    --uninvert:invert(100%);
+    --input:#e7e6e6;
 }
 #home_page{
     display: flex;
@@ -73,6 +77,8 @@
 #dynamic_container{
     width: 60%;
     height: 100%;
+    display: flex;
+    justify-content: center;
 }
 #profile_container #User_settings{
     display: flex;
@@ -91,3 +97,71 @@
     height: 25px;
     filter: var(--invert);
 }
+#user_search{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: 10px;
+    align-items: center;
+}
+#user_search #search{
+    display: flex;
+    width: 80%;
+    align-items: center;
+    height: 40px;
+    background-color: var(--input);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0px 2px rgba(0,0,0,0.5);
+    border: none;
+}
+#user_search #search input{
+    width: 90%;
+    background-color: transparent;
+    border: none;
+    color: var(--color);
+    padding-left: 10px;
+}
+#user_search #search input:focus{
+outline: none;
+}
+#user_search #search img, #user_search img{
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+#user_search #search img{
+    filter: invert(0%);
+}
+#user_search img{
+    filter: var(--invert);
+}
+#dynamic_container #global_search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-height: 40px;
+    margin: 10px;
+    border-radius: 12px;
+    background-color: var(--input);
+    box-shadow: 0 0px 2px rgba(0,0,0,0.5);
+}
+#dynamic_container #global_search img{
+    width: 5%;
+    height: 30px;
+    object-fit: contain;
+}
+#dynamic_container #global_search input{
+    width: 90%;
+    padding-left: 10px;
+    color: var(--color);
+    background-color: transparent;
+    border: none;
+}
+input:focus{
+    outline: none;
+}
+#special[type="text"]::placeholder{
+    color: var(--color);
+  }

@@ -10,10 +10,10 @@ const Home = () => {
   useEffect(()=>{
     let user=cookies.get("user_login_advantages")
     let name=cookies.get("user_name_advantages")
-    let Des=cookies.get("user_Description") || "Add Your Description"
+    let Des=cookies.get("user_Description") 
     if(!user && !name){
       navigation('/login')
-    }else{setChecker(pre=>({...pre,name:name,id:user,Des:Des}))}
+    }else{setChecker(pre=>({...pre,name:name,id:user,Des:Des?Des:"Add Your Description"}))}
   },[])
   return (
     <div id="home_page">
@@ -42,10 +42,14 @@ const Home = () => {
         </div>
       </div>
       <div id='border_line'></div>
-      <div>
-        <input type="text" onChange={(e)=>setChecker(pre=>({...pre,search:e.target.value}))}/>
-        
+      <div id='user_search'>
+      <div id='search'>
+        <input id='special' type="text" onChange={(e)=>setChecker(pre=>({...pre,search:e.target.value}))} placeholder='search'/>
+        <img src='https://cdn-icons-png.flaticon.com/128/2811/2811790.png' alt='search' />
       </div>
+      <img id='add_icon' src='https://cdn-icons-png.flaticon.com/128/9312/9312231.png' alt="add" />
+      </div>
+      <div id='border_line'></div>
        </div>
        <div id="dynamic_container"> 
         <DynamicContainer/>
