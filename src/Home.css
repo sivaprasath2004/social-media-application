@@ -50,7 +50,7 @@
     height: 2px;
     background-color: var(--border);
 }
-#FriendList_container #my_profile #logo{
+#my_profile #logo{
     display: flex;
     width: 60px;
     height: 60px;
@@ -60,7 +60,7 @@
     background-color: var(--color);
     color: var(--background);
 }
-#FriendList_container #my_profile #my_name{
+#my_profile #my_name{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,7 +78,8 @@
     width: 60%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 #profile_container #User_settings{
     display: flex;
@@ -164,4 +165,41 @@ input:focus{
 }
 #special[type="text"]::placeholder{
     color: var(--color);
+  }
+  #User_Profile{
+    width: 90%;
+    display: flex;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    justify-content: space-between;
+  }
+  #user_Follow_Button{
+    height: 30px;
+    width: 80px;
+    background-color: var(--color);
+    color: var(--background);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  #User_Details{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  #User_Logo{
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--background);
+    background-color: var(--color);
+  }
+  #USER_NAME{
+    color: var(--color);
+    font-size: 0.8rem;
   }

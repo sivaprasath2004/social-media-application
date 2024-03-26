@@ -2,8 +2,11 @@ import React,{useState,useEffect} from 'react'
 import "./Home.css"
 import DynamicContainer from './DynamicContainer'
 import Cookies from 'universal-cookie'
+import io from 'socket.io-client'
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 const Home = () => {
+  let socket
   const navigation=useNavigate()
   const cookies=new Cookies()
   const [checker,setChecker]=useState({dark:true,switched:"none",name:" ",Des:" "})
@@ -15,6 +18,13 @@ const Home = () => {
       navigation('/login')
     }else{setChecker(pre=>({...pre,name:name,id:user,Des:Des?Des:"Add Your Description"}))}
   },[])
+  socket=io('http://localhost:5000')
+  socket.emit('join',{me:checker.id,name:checker.name},err=>{
+    console.log(err)
+  })
+  socket.on('message',msg=>{
+    console.log(msg)
+  })
   return (
     <div id="home_page">
        <div id='profile_container'>
@@ -52,7 +62,7 @@ const Home = () => {
       <div id='border_line'></div>
        </div>
        <div id="dynamic_container"> 
-        <DynamicContainer/>
+        <DynamicContainer onUpdate={{id:checker.id,name:checker.name}} />
        </div>
     </div>
   )
