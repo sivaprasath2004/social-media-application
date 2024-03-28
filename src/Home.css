@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap');
 :root{
     --background:#1e1a1a;
     --color:white;
@@ -5,6 +8,8 @@
     --border:#515151;
     --uninvert:invert(0%);
     --input:#4b4848;
+    --transparent:rgb(0 0 0 / 44%);
+    --filter:blur(16px)
 }
 .dark{
     --color: #131313;
@@ -13,7 +18,28 @@
     --border:#534747;
     --uninvert:invert(100%);
     --input:#e7e6e6;
+    --transparent:white;
+    --filter:blur(16px)
 }
+#parent_tag_remove h3,#USER_NAME p{
+    font-family: "Abel", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  #remove,#cancel,
+  #navigator h1,#following_butt,#nomore_foll{
+font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  cursor: pointer;
+  font-style: normal;
+}
+#User_Logo h1,#parent_tag_remove h2,#USER_NAME h1{
+    font-family: "Signika Negative", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+  }
 #home_page{
     display: flex;
     height: 100vh;
@@ -80,6 +106,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y: scroll;
+    position: relative;
 }
 #profile_container #User_settings{
     display: flex;
@@ -174,14 +202,24 @@ input:focus{
     align-items: center;
     justify-content: space-between;
   }
-  #user_Follow_Button{
+  .user_Follow_Button,#following_butt,#followed_butt{
     height: 30px;
     width: 80px;
-    background-color: var(--color);
-    color: var(--background);
     border: none;
     border-radius: 12px;
     font-weight: 600;
+  }
+  .user_Follow_Button{
+    background-color: var(--color);
+    color: var(--background);
+  }
+  #following_butt{
+    background-color: #243ea373;
+    color: #0010fd;
+  }
+  #followed_butt{
+    background-color: #276825;
+  color: #43fb00;
   }
   #User_Details{
     display: flex;
@@ -199,7 +237,39 @@ input:focus{
     color: var(--background);
     background-color: var(--color);
   }
-  #USER_NAME{
+  #USER_NAME,#nomore_foll{
     color: var(--color);
     font-size: 0.8rem;
   }
+  #Alert{
+    position: absolute;
+    background-color: transparent;
+  }
+  #Alert{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+#parent_tag_remove{
+    background-color: var(--transparent);
+    border: 3px solid var(--border);
+    backdrop-filter:var(--filter);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+#parent_tag_remove h2,#parent_tag_remove h3,#parent_tag_remove p,#color{
+    color: var(--color);
+}
+.hovered{
+    border-bottom: 3px solid var(--color);
+}
+#parent_tag_remove #remove,#parent_tag_remove h3{
+    border: none;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+}
+#cancel{
+    color: var(--color);
+}

@@ -1,0 +1,37 @@
+#navigator{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+#parent_tag_remove{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    width: 251px;
+    border-radius: 12px;
+}
+#parent_tag_remove button{
+  width: 100%;
+  font-size: 1.1rem;
+  background-color: transparent;
+}
+#cancel{
+  padding: 10px;
+  border: none;
+  border-bottom: 0px solid transparent;
+}
+#remove{
+  color: #d52020;
+}
+#nomore_foll{
+  display: flex;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}

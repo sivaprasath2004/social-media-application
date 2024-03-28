@@ -3,7 +3,7 @@ import "./Home.css"
 import DynamicContainer from './DynamicContainer'
 import Cookies from 'universal-cookie'
 import io from 'socket.io-client'
-import axios from 'axios'
+import Followers from './followers'
 import { useNavigate } from 'react-router-dom'
 const Home = () => {
   let socket
@@ -22,8 +22,14 @@ const Home = () => {
   socket.emit('join',{me:checker.id,name:checker.name},err=>{
     console.log(err)
   })
-  socket.on('message',msg=>{
-    console.log(msg)
+  socket.on('follower',msg=>{
+    if(msg){
+      let mess
+      if(checker.notify){
+       mess=[]
+      }
+      checker.switched==="Add Friend"?null:setChecker(pre=>({...pre,notify:msg}))
+    }
   })
   return (
     <div id="home_page">
@@ -31,7 +37,7 @@ const Home = () => {
        <h1>{checker?.name[0]}</h1>
        <div id='User_settings'>
        <img style={{filter:checker.switched==="friends"?"brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)":""}} src='https://cdn-icons-png.flaticon.com/128/880/880594.png' alt='friends' onClick={()=>setChecker(pre=>({...pre,switched:"friends"}))}/>
-       <img style={{filter:checker.switched==="message"?" brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)":''}} src='https://cdn-icons-png.flaticon.com/128/3114/3114735.png' alt='message' onClick={()=>setChecker(pre=>({...pre,switched:"message"}))}/>
+       <img style={{filter:checker.switched==="Add Friend"?" brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)":''}} src='https://cdn-icons-png.flaticon.com/128/9055/9055030.png' alt='Add Friend' onClick={()=>setChecker(pre=>({...pre,switched:"Add Friend"}))}/>
        <img style={{filter:checker.switched==="settings"?" brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)":''}} src='https://cdn-icons-png.flaticon.com/128/15360/15360026.png' alt='settings' onClick={()=>setChecker(pre=>({...pre,switched:"settings"}))}/>
        </div>
        <div id='dark_Light_mode'>
@@ -62,7 +68,10 @@ const Home = () => {
       <div id='border_line'></div>
        </div>
        <div id="dynamic_container"> 
-        <DynamicContainer onUpdate={{id:checker.id,name:checker.name}} />
+       {checker.switched==="Add Friend"?
+        <Followers onUpdate={{id:checker.id,name:checker.name}} />
+        :<DynamicContainer onUpdate={{id:checker.id,name:checker.name}} />
+      }
        </div>
     </div>
   )
