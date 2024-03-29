@@ -9,7 +9,11 @@
     --uninvert:invert(0%);
     --input:#4b4848;
     --transparent:rgb(0 0 0 / 44%);
-    --filter:blur(16px)
+    --filter:blur(16px);
+    --Alert_red:#ff000026;
+    --Alert_red_border:3px solid hsla(0, 100%, 50%, 0.271);
+    --Alert_blue:#001fff26;
+    --Alert_blue_border:3px solid #0008ff8c;
 }
 .dark{
     --color: #131313;
@@ -19,9 +23,13 @@
     --uninvert:invert(100%);
     --input:#e7e6e6;
     --transparent:white;
-    --filter:blur(16px)
+    --filter:blur(16px);
+    --Alert_red:#ff0000a3;
+    --Alert_red_border: 3px solid red;
+    --Alert_blue:#001fff82;
+    --Alert_blue_border:3px solid #0008ff8c;
 }
-#parent_tag_remove h3,#USER_NAME p{
+#parent_tag_remove h3,#USER_NAME p,#Alert_red p,#Alert_Blue p{
     font-family: "Abel", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -34,12 +42,13 @@ font-family: "Josefin Sans", sans-serif;
   cursor: pointer;
   font-style: normal;
 }
-#User_Logo h1,#parent_tag_remove h2,#USER_NAME h1{
+#User_Logo h1,#parent_tag_remove h2,#USER_NAME h1,#Alert_red h1,#Alert_Blue h1{
     font-family: "Signika Negative", sans-serif;
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
   }
+  #navigator h1{position: relative;}
 #home_page{
     display: flex;
     height: 100vh;
@@ -49,13 +58,13 @@ font-family: "Josefin Sans", sans-serif;
 #profile_container{
     display: flex;
     flex-direction: column;
-    width: 3%;
+    width: 3.7%;
     height: 100%;
     justify-content: space-between;
     align-items: center;
     border-right: 2px solid var(--border);
 }
-#profile_container h1{
+#profile_container h1,#Alert_red,#Alert_Blue{
     color: var(--color);
 }
 #FriendList_container{
@@ -121,10 +130,29 @@ font-family: "Josefin Sans", sans-serif;
     justify-content: center;
     align-items: center;
 }
-#User_settings img,#dark_Light_mode img{
+#dark_Light_mode img,#User_settings div{
     width: 25px;
     height: 25px;
+    position: relative;
+}
+#User_settings img{
+    width: 100%;
+    height: 100%;
+}
+#User_settings img,#dark_Light_mode img{
     filter: var(--invert);
+    position: relative;
+}
+.notification::before,#notification::before{
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: -4px;
+    background-color: #eb2626;
+    border-radius: 100%;
+    border: none;
+    right: -8px;
 }
 #user_search{
     display: flex;
@@ -159,10 +187,22 @@ outline: none;
     width: 30px;
     cursor: pointer;
 }
+#message_icon{
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+}
 #user_search #search img{
     filter: invert(0%);
 }
-#user_search img{
+#Back_icon{height: 30px;width: 30px;cursor: pointer;}
+#close_image{
+    padding: 10px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+#user_search img,#close_image,#Back_icon{
     filter: var(--invert);
 }
 #dynamic_container #global_search{
@@ -258,7 +298,7 @@ input:focus{
     backdrop-filter:var(--filter);
     box-shadow: 0 2px 12px rgba(0,0,0,0.5);
 }
-#parent_tag_remove h2,#parent_tag_remove h3,#parent_tag_remove p,#color{
+#parent_tag_remove h2,#parent_tag_remove h3,#parent_tag_remove p,.color{
     color: var(--color);
 }
 .hovered{
@@ -272,4 +312,12 @@ input:focus{
 }
 #cancel{
     color: var(--color);
+}
+#Alert_red{
+    background-color:var(--Alert_red) ;
+    border:var(--Alert_red_border) ;
+}
+#Alert_Blue{
+    background-color:var(--Alert_blue) ;
+    border: var(--Alert_blue_border);
 }
