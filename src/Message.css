@@ -1,0 +1,72 @@
+.messge_attribute {
+  overflow: hidden;
+}
+#message_page {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#message_header_container {
+  display: flex;
+  width: 100%;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+}
+#profile_back_container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.5rem;
+}
+.input_container {
+  width: 100%;
+  position: absolute;
+  bottom: 4%;
+  height: 40px;
+}
+.input_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+textarea {
+  padding: 10px;
+  width: 80%;
+  height: 20px;
+  overflow: auto;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+textarea:focus {
+  outline: none;
+}
+textarea::-webkit-scrollbar{
+  width: 5px;
+}
+textarea::-webkit-scrollbar-track{
+  background: transparent;
+}
+textarea::-webkit-scrollbar-thumb:hover{
+  background: black;
+}
+#send_Icon {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(6, 2, 238);
+  box-shadow: 0 5px 2px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+#send_Icon img {
+  filter: invert(1);
+  rotate: 49deg;
+}

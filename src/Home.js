@@ -8,42 +8,52 @@ import Followers from "./followers";
 import { useNavigate } from "react-router-dom";
 import Message from "./Message";
 const Home = () => {
-  let socket;
-  const navigation = useNavigate();
   const cookies = new Cookies();
+  let user = cookies.get("user_login_advantages");
+  let name = cookies.get("user_name_advantages");
+  let Des = cookies.get("user_Description") || "Add";
+  let socket = io("http://localhost:5000");
+  const navigation = useNavigate();
   const [checker, setChecker] = useState({
     dark: true,
     switched: "none",
-    name: " ",
-    Des: " ",
+    name: name,
+    Des: Des,
+    id: user,
   });
   async function fetch(user) {
     let res = await axios.post("http://localhost:5000/userId", {
       id: user,
     });
-    console.log(res.data.notification);
-    setChecker((pre) => ({ ...pre, notification: res.data.notification }));
+    const rooms = res.data.RoomId.map((item) => item.id);
+    let users = await axios.post("http://localhost:5000/messagers", {
+      ids: rooms,
+    });
+    console.log(users);
+    setChecker((pre) => ({
+      ...pre,
+      notification: res.data.notification,
+      user_s: rooms,
+      roomid: res.data.RoomId,
+      messagers: users.data,
+      me: res.data,
+    }));
+  }
+  function handleMessage(item) {
+    setChecker((pre) => ({ ...pre, switched: item }));
   }
   useEffect(() => {
-    let user = cookies.get("user_login_advantages");
-    let name = cookies.get("user_name_advantages");
-    let Des = cookies.get("user_Description");
+    socket.emit("join", { me: checker.id, name: checker.name }, (err) => {
+      console.log(err);
+    });
     if (!user && !name) {
       navigation("/login");
     } else {
-      setChecker((pre) => ({
-        ...pre,
-        name: name,
-        id: user,
-        Des: Des ? Des : "Add Your Description",
-      }));
       fetch(user);
+      console.log("how may");
     }
   }, []);
-  socket = io("http://localhost:5000");
-  socket.emit("join", { me: checker.id, name: checker.name }, (err) => {
-    console.log(err);
-  });
+
   socket.on("follower", (msg) => {
     if (msg) {
       fetch(msg.me);
@@ -71,10 +81,7 @@ const Home = () => {
           </div>
           <div
             className={
-              checker?.notification?.some(
-                (item) =>
-                  item.notify === "followers" || item.notify === "remove"
-              )
+              checker?.notification?.some((item) => item.notify !== "message")
                 ? "notification"
                 : ""
             }
@@ -82,7 +89,7 @@ const Home = () => {
             <img
               style={{
                 filter:
-                  checker.switched === "Add Friend"
+                  checker?.switched === "Add Friend"
                     ? " brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)"
                     : "",
               }}
@@ -97,7 +104,7 @@ const Home = () => {
             <img
               style={{
                 filter:
-                  checker.switched === "settings"
+                  checker?.switched === "settings"
                     ? " brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)"
                     : "",
               }}
@@ -136,7 +143,7 @@ const Home = () => {
                 : checker.name}
             </h1>
             <h2>
-              {checker.Des.length > 20
+              {checker?.Des?.length > 20
                 ? checker.Des.slice(0, 20) + ".."
                 : checker.Des}
             </h2>
@@ -168,9 +175,51 @@ const Home = () => {
           />
         </div>
         <div id="border_line"></div>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            overflowX: "hidden",
+            overflowY: "scroll",
+            display: "flex",
+            flexDirection: "column",
+            paddingTop: 10,
+            paddingLeft: 5,
+          }}
+          id="messagers_container"
+        >
+          {checker?.messagers?.map((item, index) => (
+            <div
+              key={`User_Details_${index}`}
+              id="User_Details"
+              onClick={() =>
+                setChecker((pre) => ({
+                  ...pre,
+                  messager: item,
+                  switched: "message",
+                }))
+              }
+              className="messagers_message"
+            >
+              <div key={`logo_${index}`} id="User_Logo">
+                <h1>{item?.name[0]}</h1>
+              </div>
+              <div key={`name${index}`} id="USER_NAME">
+                <h1>
+                  {item?.name.length > 25
+                    ? item.name.slice(0, 25) + ".."
+                    : item.name}
+                </h1>
+                <p style={{ fontSize: "0.9rem", fontWeight: 600 }}>
+                  {item.Des}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div id="dynamic_container">
-        {checker.switched === "Add Friend" ? (
+        {checker?.switched === "Add Friend" ? (
           <Followers
             onUpdate={{
               id: checker.id,
@@ -181,8 +230,12 @@ const Home = () => {
                   : "null",
             }}
           />
-        ) : checker.switched === "message" ? (
-          <Message />
+        ) : checker?.switched === "message" ? (
+          <Message
+            onUpdate={handleMessage}
+            id={checker?.me}
+            user={checker?.messager}
+          />
         ) : (
           <DynamicContainer onUpdate={{ id: checker.id, name: checker.name }} />
         )}

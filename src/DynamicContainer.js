@@ -7,36 +7,33 @@ const DynamicContainer = ({ onUpdate }) => {
   let Id = onUpdate.id;
   let name = onUpdate.name;
   console.log(onUpdate.id);
-  const [checker, setChecker] = useState({ switched: "search" });
+  const [checker, setChecker] = useState({ switched: "search", user: "null" });
   const [Following, setFollowing] = useState([]);
-  useEffect(() => {
-    const search = async () => {
-      if (checker?.input?.length === 1) {
-        let res = await axios.post("http://localhost:5000/searchResult", {
-          val: checker.input,
-        });
-        let follow = await axios.post("http://localhost:5000/followings", {
-          id: Id,
-          section: "no",
-        });
-        console.log("follow", follow);
-        console.log("finish");
-        console.log(res.data);
-        setChecker((pre) => ({
-          ...pre,
-          users: res.data,
-          followers: follow.data,
-        }));
-        follow.data.following.map((item) =>
-          setFollowing((pre) => [...pre, item])
-        );
-      } else {
-        console.log("no more");
-        console.log(checker?.input);
-      }
-    };
+  const search = async () => {
+    if (checker?.input?.length === 1) {
+      let res = await axios.post("http://localhost:5000/searchResult", {
+        val: checker.input,
+      });
+      let follow = await axios.post("http://localhost:5000/followings", {
+        id: Id,
+        section: "no",
+      });
+      setChecker((pre) => ({
+        ...pre,
+        users: res.data,
+        followers: follow.data,
+      }));
+      follow.data.following.map((item) =>
+        setFollowing((pre) => [...pre, item])
+      );
+    } else {
+      console.log("no more");
+      console.log(checker?.input);
+    }
+  };
+  if (checker?.input?.length === 1) {
     search();
-  }, [checker.input]);
+  }
   function handleFollow(id, index) {
     setFollowing((pre) => [...pre, id]);
     socket = io("http://localhost:5000");
@@ -49,10 +46,25 @@ const DynamicContainer = ({ onUpdate }) => {
   function handleMessage(item) {
     setChecker((pre) => ({ ...pre, switched: item }));
   }
+  async function handleMessagePage(ele) {
+    setChecker((pre) => ({ ...pre, user: ele }));
+    const roomId_creates = async () => {
+      let res = await axios.post("http://localhost:5000/room", {
+        id: Id,
+        user: ele._id,
+      });
+      setChecker((pre) => ({
+        ...pre,
+        switched: "message",
+        verified: res.data,
+      }));
+    };
+    roomId_creates();
+  }
   return (
     <>
       {checker.switched !== "message" ? (
-        <>
+        <div style={{ width: "100%", height: "100%", overflowY: "scroll" }}>
           <div id="global_search">
             <img
               src="https://cdn-icons-png.flaticon.com/128/2811/2811790.png"
@@ -96,7 +108,7 @@ const DynamicContainer = ({ onUpdate }) => {
                   src="https://cdn-icons-png.flaticon.com/128/12795/12795083.png"
                   alt="message"
                   id="message_icon"
-                  onClick={() => handleMessage("message")}
+                  onClick={() => handleMessagePage(item)}
                 />
                 {Object.values(Following).includes(item._id) ? (
                   <button
@@ -122,9 +134,13 @@ const DynamicContainer = ({ onUpdate }) => {
               </div>
             </div>
           ))}
-        </>
+        </div>
       ) : (
-        <Message onUpdate={handleMessage} />
+        <Message
+          onUpdate={handleMessage}
+          id={checker.verified}
+          user={checker?.user}
+        />
       )}
     </>
   );
