@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 import "./followers.css";
-const Followers = ({ onUpdate }) => {
+const Followers = ({ onUpdate, notification }) => {
   const [followings, setFollowings] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [checker, setChecker] = useState({
@@ -88,7 +88,7 @@ const Followers = ({ onUpdate }) => {
       id: Id,
       item: item,
     });
-    console.log(res);
+    console.log(notify.length);
   }
   console.log(followers);
   function UserSelected(item, index, condition) {
@@ -123,7 +123,8 @@ const Followers = ({ onUpdate }) => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        overflow: checker.Alert ? "hidden" : "",
+        overflowY: checker.Alert ? "hidden" : "scroll",
+        overflowX: "hidden",
       }}
     >
       <div id="navigator">

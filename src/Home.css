@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Abel&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Abel&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap');
 :root{
     --background:#1e1a1a;
@@ -15,6 +16,7 @@
     --Alert_blue:#001fff26;
     --Alert_blue_border:3px solid #0008ff8c;
     --box_shadow:0 0px 12px rgb(0 0 0);
+    --you:#ff005a;
 }
 .dark{
     --color: #131313;
@@ -30,8 +32,9 @@
     --Alert_blue:#001fff82;
     --Alert_blue_border:3px solid #0008ff8c;
     --box_shadow:0 0px 7px rgb(0 0 0);
+    --you:#ff005ade;
 }
-#parent_tag_remove h3,#USER_NAME p,#Alert_red p,#Alert_Blue p{
+#parent_tag_remove h3,#USER_NAME p,#Alert_red p,#Alert_Blue p,#clock,#menu_tabs p,#my_name h2{
     font-family: "Abel", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -44,7 +47,7 @@ font-family: "Josefin Sans", sans-serif;
   cursor: pointer;
   font-style: normal;
 }
-#User_Logo h1,#parent_tag_remove h2,#USER_NAME h1,#Alert_red h1,#Alert_Blue h1{
+#User_Logo h1,#my_name h1,#logo h1,#parent_tag_remove h2,#USER_NAME h1,#profile_container h1,#Alert_red h1,#Alert_Blue h1,#user_chat h1, #dark_Light_mode h1{
     font-family: "Signika Negative", sans-serif;
     font-optical-sizing: auto;
     font-weight: 600;
@@ -69,14 +72,16 @@ font-family: "Josefin Sans", sans-serif;
 #profile_container h1,#Alert_red,#Alert_Blue,textarea::placeholder{
     color: var(--color);
 }
-#FriendList_container{
+.FriendList_container{
     width: 40%;
     height: 100%;
     border-right: 2px solid var(--border);
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
-#FriendList_container #my_profile{
+#my_profile{
     display: flex;
     width: 100%;
     height: 4rem;
@@ -109,9 +114,10 @@ font-family: "Josefin Sans", sans-serif;
     font-size: 1.4rem;
 }
 #my_profile #my_name h2{
-    font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
-#dynamic_container{
+.dynamic_container{
     width: 60%;
     height: 100%;
     display: flex;
@@ -202,17 +208,17 @@ outline: none;
 #user_search #search img{
     filter: invert(0%);
 }
-#Back_icon{height: 30px;width: 30px;cursor: pointer;}
+#Back_icon,.Back_icon{height: 30px;width: 30px;cursor: pointer;}
 #close_image{
     padding: 10px;
     height: 20px;
     width: 20px;
     cursor: pointer;
 }
-#user_search img,#close_image,#Back_icon{
+#user_search img,#close_image,#Back_icon,.Back_icon{
     filter: var(--invert);
 }
-#dynamic_container #global_search{
+.dynamic_container #global_search{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -223,17 +229,26 @@ outline: none;
     background-color: var(--input);
     box-shadow: 0 0px 2px rgba(0,0,0,0.5);
 }
-#dynamic_container #global_search img{
+.dynamic_container #global_search img{
     width: 5%;
     height: 30px;
     object-fit: contain;
 }
-#dynamic_container #global_search input{
+.dynamic_container #global_search input{
     width: 90%;
     padding-left: 10px;
     color: var(--color);
     background-color: transparent;
     border: none;
+}
+.dynamic_container #dark_Light_mode{
+  justify-content:flex-start;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 10px 0 0 20px;
+}
+.dynamic_container #dark_Light_mode h1{
+  color: var(--color);
 }
 input:focus{
     outline: none;
@@ -355,6 +370,15 @@ textarea::-webkit-scrollbar-thumb{
   *::-webkit-scrollbar-thumb:active {
     background-color: #62A34B;
   }
+  #messagers_container{
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-left: 5px
+  }
   .messagers_message{
     cursor: pointer;
     display: flex;
@@ -362,3 +386,123 @@ textarea::-webkit-scrollbar-thumb{
     border-bottom: 2px solid var(--border);
     padding: 15px;
   }
+  #clock,#user_chat h1{
+    color: var(--color);
+  }
+  .me{
+    background-color: #10a390;
+  }
+  .you{
+    background-color:var(--you) ;
+  }
+  .you::after{
+  border-bottom: 10px solid var(--you);
+  }
+  .header{
+    display: none;
+  }
+.setting_profile{
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid var(--border);
+}
+  /* mobile screen */
+  @media (max-width:780px){
+    #home_page{
+      flex-direction: column;
+    }
+    .color{
+      font-size: 1.2rem;
+    }
+    #profile_container{
+      display: none;
+    }
+    .FriendList_container{
+      display: flex;
+      width: 100%;
+    }
+    #my_profile{
+      display: none;
+    }
+    .dynamic_container{
+      width: 100%;
+      overflow-y: scroll;
+    }
+    
+  .header{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .hided{
+    display: none;
+  }
+  #name h1{
+    color: var(--color);
+  }
+  #name{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    position: relative
+  }
+  #name h1{
+    font-family: "Reddit Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+  }
+  #menu{
+    display: flex;
+    background-color: var(--color);
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    position: relative;
+    margin-right: 30px;
+  }
+  #menu::before{
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--color);
+    top: -8px;
+    border-radius: 50%;
+  }
+  #menu::after{
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: var(--color);
+    top: 8px;
+    border-radius: 50%;
+  }
+  #menu_tabs{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    }
+  #menu_tabs p{
+    font-size: 1.2rem;
+    color:var(--color);
+    font-weight: 600;
+  }
+  #menu_tabs .active{
+    border-bottom: 2px solid var(--color);
+  }
+#back_icon_container{
+    display: flex;
+    padding: 10px;
+  }
+  #dark_Light_mode h1{
+    font-size: 1rem;
+  }
+}

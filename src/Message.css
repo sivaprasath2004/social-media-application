@@ -32,11 +32,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 textarea {
   padding: 10px;
-  width: 80%;
+  width: 75%;
   height: 20px;
   overflow: auto;
   font-size: 1.2rem;
@@ -46,13 +46,13 @@ textarea {
 textarea:focus {
   outline: none;
 }
-textarea::-webkit-scrollbar{
+textarea::-webkit-scrollbar {
   width: 5px;
 }
-textarea::-webkit-scrollbar-track{
+textarea::-webkit-scrollbar-track {
   background: transparent;
 }
-textarea::-webkit-scrollbar-thumb:hover{
+textarea::-webkit-scrollbar-thumb:hover {
   background: black;
 }
 #send_Icon {
@@ -69,4 +69,68 @@ textarea::-webkit-scrollbar-thumb:hover{
 #send_Icon img {
   filter: invert(1);
   rotate: 49deg;
+}
+#me,
+#you {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#me {
+  align-items: flex-end;
+}
+#you {
+  align-items: flex-start;
+}
+#user_chat {
+  position: relative;
+  min-height: 20px;
+  margin: 10px;
+  padding: 6px;
+  word-break: break-all;
+  z-index: 2;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px;
+}
+.me::after {
+  content: "";
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  z-index: 1;
+  top: 0%;
+  right: -8px;
+  rotate: 181deg;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #10a390;
+}
+.you::after {
+  content: "";
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  z-index: 1;
+  top: 0%;
+  left: -8px;
+  rotate: 181deg;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+#user_chat h1 {
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+#clock {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: center;
+}
+.right {
+  padding-right: 10px;
+}
+.left {
+  padding-left: 10px;
 }

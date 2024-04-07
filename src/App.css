@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+@media (max-width:780px){
+  .hide{
+    display: none;
+  }
+}
+/* mobile screen */

@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Epilogue:ital,wght@0,100..900;1,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Oswald:wght@200..700&family=Signika+Negative:wght@300..700&display=swap');
+.home_Page{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+}
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 0%;
+    width: 100%;
+    height: 60px;
+    background: transparent;
+    backdrop-filter: blur(15px);
+}
+nav h1{
+  font-size:2rem;
+  font-family: "Reddit Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+#nav,#view{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+#nav a,#view a{
+    text-decoration: none;
+    color: rgb(56, 53, 53);
+    font-size: 1.5rem;
+    font-family: "Reddit Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+#nav a:hover{
+    color: black;
+}
+#home,#about{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.contents{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 20rem;
+}
+.logo{
+display: flex;
+flex: 1 0 21rem;
+justify-content: center;
+align-items: center;
+}
+.logo .desktop{
+    height:100%;
+    width: 320px;
+    object-fit: contain;
+}
+.logo .mobile{
+    width: 100%;
+    object-fit: contain;
+}
+#text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 70%;
+}
+#text h1{
+    font-size: 2rem;
+    line-height: normal;
+    margin-bottom: 2.5rem;
+    font-family: "Epilogue", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+#text p{
+    font-size: 1.2rem;
+    text-align: left;
+    line-height: 1.5;
+    font-family: "Epilogue", sans-serif;
+}
+#text button{
+    font-size: 18px;
+    padding: 1rem 2rem;
+    margin: 1rem 0 1.5rem 0;
+    transition: all .3s linear;
+    color: white;
+    background-color: black;
+    font-weight: 700;
+    border: 1px solid;
+    border-radius: 1rem;
+    cursor:pointer;
+}
+@media (max-width:660px) {
+    #home{
+    padding-top: 100px;
+    }
+    .contents{
+        padding-top: 30px;
+    }
+    #text{
+        max-width: 90%;
+    }
+    .nav{
+        display: none;
+    }
+    #nav,#view{
+        position: fixed;
+        top: 0;
+        padding: 1rem 2rem 1rem 1rem;
+        right: -1%;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in;
+         flex-direction: column;
+        background: white;
+        width: 70%;
+    }
+    #view{
+        transform: translateX(0%);
+        transition: all 0.3s ease-in;
+        box-shadow: 0 2px 12px 40rem rgb(0 0 0 / 62%);
+    }
+}

@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Message.css";
 import io from "socket.io-client";
-const Message = ({ onUpdate, id, user }) => {
+import axios from "axios";
+let count = 1;
+const Message = ({ onUpdate, id, user, width }) => {
+  const socket = io("http://localhost:5000");
   const [checker, setChecker] = useState({});
   const [messages, setMessages] = useState([]);
+  const containerRef = useRef(null);
   function handleBack() {
-    onUpdate("search");
+    if (width > 781) {
+      onUpdate("search");
+    } else {
+      onUpdate("chats");
+    }
   }
-  let socket = io("http://localhost:5000");
   const roomid = id.RoomId.find((item) => item.id === user._id);
   useEffect(() => {
-    socket.emit("room", { id: roomid, user: id.name }, (err) => {
+    socket.emit("room", { id: roomid.roomId }, (err) => {
       console.log(err);
     });
   }, []);
@@ -18,6 +25,21 @@ const Message = ({ onUpdate, id, user }) => {
     setMessages((pre) => [...pre, msg]);
   });
 
+  useEffect(() => {
+    const fetch = async () => {
+      let res = await axios.post("http://localhost:5000/chattings", {
+        id: roomid.roomId,
+      });
+      if (res.data.chats !== undefined) {
+        setMessages(res.data.chats);
+        count += 1;
+      }
+    };
+    fetch();
+  }, []);
+  useEffect(() => {
+    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  }, [messages]);
   function sendMessage() {
     socket.emit(
       "message",
@@ -58,6 +80,7 @@ const Message = ({ onUpdate, id, user }) => {
         </div>
       </div>
       <div
+        ref={containerRef}
         id="chattings"
         style={{ height: "80%", overflow: "scroll", width: "100%" }}
       >
@@ -72,8 +95,14 @@ const Message = ({ onUpdate, id, user }) => {
               className={id._id === item.id ? "me" : "you"}
             >
               <h1 key={`user_chat_text${index}`}>{item.text} </h1>
-              <span key={`time${index}`}>{item.time.split("/")}</span>
             </div>
+            <p
+              id="clock"
+              className={id._id === item.id ? "right" : "left"}
+              key={`time${index}`}
+            >
+              {item.time.split("/")[0]}
+            </p>
           </div>
         ))}
       </div>
