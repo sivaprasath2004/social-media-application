@@ -106,17 +106,7 @@ const Message = ({ onUpdate, id, user, width }) => {
           </div>
         ))}
       </div>
-      <div
-        className="input_container"
-        style={{
-          bottom:
-            checker?.input?.length > 114
-              ? "6%"
-              : checker?.input?.length > 37
-              ? "4%"
-              : "2%",
-        }}
-      >
+      <div className="input_container">
         <textarea
           style={{
             height:

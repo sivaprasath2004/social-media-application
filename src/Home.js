@@ -23,12 +23,12 @@ const Home = () => {
     Des: Des,
     id: user,
     results: "none",
+    menuBar: false,
   });
   const [width, setwidth] = useState(window.innerWidth);
   useEffect(() => {
     window.addEventListener("resize", () => setwidth(window.innerWidth));
   }, []);
-  console.log(width);
   async function fetch(user) {
     let res = await axios.post("http://localhost:5000/userId", {
       id: user,
@@ -57,12 +57,8 @@ const Home = () => {
       navigation("/login");
     } else {
       fetch(user);
-      console.log("how may");
     }
   }, [user, name]);
-  const refetching = () => {
-    fetch(user);
-  };
   socket.on("follower", (msg) => {
     if (msg) {
       setTimeout(() => {
@@ -91,6 +87,9 @@ const Home = () => {
       me: id,
       switched: "message",
     }));
+  }
+  function handleMenssgae_notificatio(ele) {
+    setChecker((pre) => ({ ...pre, notification: ele }));
   }
   function searchEngine(item, index) {
     return (
@@ -133,32 +132,58 @@ const Home = () => {
           <h1>Zodia</h1>
           <div
             id="menu"
-            onClick={() => setChecker((pre) => ({ ...pre, menuBar: "open" }))}
+            onClick={() =>
+              setChecker((pre) => ({ ...pre, menuBar: !checker.menuBar }))
+            }
           ></div>
+          <div
+            className={checker.menuBar ? "menu_setting" : "menu_setting hiding"}
+            onClick={() =>
+              setChecker((pre) => ({
+                ...pre,
+                switched: "settings",
+                menuBar: false,
+              }))
+            }
+          >
+            <h1>Settings</h1>
+          </div>
         </div>
         <div id="menu_tabs">
-          <p
+          <div
             className={checker.switched === "chats" ? "active" : ""}
             onClick={() => setChecker((pre) => ({ ...pre, switched: "chats" }))}
           >
-            Message
-          </p>
-          <p
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/8315/8315859.png"
+              alt="message_icon"
+            />{" "}
+            <p>Message</p>
+          </div>
+          <div
             className={checker.switched === "Add Friend" ? "active" : ""}
             onClick={() =>
               setChecker((pre) => ({ ...pre, switched: "Add Friend" }))
             }
           >
-            Followings
-          </p>
-          <p
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/33/33308.png"
+              alt="people"
+            />
+            <p>Followings</p>
+          </div>
+          <div
             className={checker.switched === "search" ? "active" : ""}
             onClick={() =>
               setChecker((pre) => ({ ...pre, switched: "search" }))
             }
           >
-            Find
-          </p>
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/14247/14247188.png"
+              alt="find"
+            />
+            <p>Find</p>
+          </div>
         </div>
       </div>
       <div id="profile_container">
@@ -252,7 +277,7 @@ const Home = () => {
             </h2>
           </div>
         </div>
-        <div id="border_line"></div>
+        <div className="border_line first_line"></div>
         <div id="user_search">
           <div id="search">
             <input
@@ -271,11 +296,11 @@ const Home = () => {
             src="https://cdn-icons-png.flaticon.com/128/9312/9312231.png"
             alt="add"
             onClick={() =>
-              setChecker((pre) => ({ ...pre, switched: "message" }))
+              setChecker((pre) => ({ ...pre, switched: "search" }))
             }
           />
         </div>
-        <div id="border_line"></div>
+        <div className="border_line"></div>
         <div id="messagers_container">
           {checker.results === "none"
             ? checker?.messagers?.map((item, index) =>
@@ -301,7 +326,7 @@ const Home = () => {
                   ? checker.notification
                   : "null",
             }}
-            notification={refetching}
+            notification={handleMenssgae_notificatio}
           />
         </div>
       ) : checker?.switched === "message" ? (

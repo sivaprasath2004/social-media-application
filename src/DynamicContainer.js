@@ -36,16 +36,12 @@ const DynamicContainer = ({ onUpdate, messages }) => {
       }
     });
   }
-  function handleMessage(item) {
-    setChecker((pre) => ({ ...pre, switched: item }));
-  }
   async function handleMessagePage(ele) {
-    setChecker((pre) => ({ ...pre, user: ele }));
     let res = await axios.post("http://localhost:5000/room", {
       id: Id,
       user: ele._id,
     });
-    messages(res.data, checker.user);
+    messages(res.data, ele);
   }
   function searchResults(text) {
     setChecker((pre) => ({ ...pre, input: text }));

@@ -93,7 +93,13 @@ const Login = () => {
       ) : (
         <></>
       )}
-      <div id="login">
+      <div
+        id="login"
+        style={{
+          padding: values.login ? "padding: 4rem 2rem 2rem 2rem" : "2rem",
+        }}
+      >
+        <h1>{values.login ? "Sign In" : "Sign Up"}</h1>
         {!values.login ? (
           <>
             <div id="input">

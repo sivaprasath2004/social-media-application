@@ -17,7 +17,6 @@ const Followers = ({ onUpdate, notification }) => {
   let Id = onUpdate.id;
   let name = onUpdate.name;
   const [notify, setNotify] = useState(onUpdate.notification);
-  console.log(notify);
   async function fetch() {
     let res = await axios.post("http://localhost:5000/followings", {
       id: Id,
@@ -83,12 +82,13 @@ const Followers = ({ onUpdate, notification }) => {
     setChecker((pre) => ({ ...pre, Alert: true, user: fin, letter: letter }));
   }
   async function removeNotification(item) {
-    setNotify(notify.filter((ele) => ele !== item));
+    let element = notify.filter((ele) => ele !== item);
     let res = await axios.post("http://localhost:5000/deleteMessage", {
       id: Id,
       item: item,
     });
-    console.log(notify.length);
+    setNotify(element);
+    notification(element);
   }
   console.log(followers);
   function UserSelected(item, index, condition) {

@@ -5,7 +5,7 @@ main{
     align-items: center;
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(135deg, rgb(68, 202, 201) 0%,rgb(252, 255, 114) 100%);
+    background-color: white;
 }
 #login{
     position: relative;
@@ -18,8 +18,8 @@ main{
     gap: 1rem;
     border: 4px solid #e5e4e4;
     border-radius: 15px;
-    backdrop-filter: blur(12px);
-    padding: 4rem;
+    backdrop-filter: blur(12px); 
+    padding: 4rem 2rem 2rem 2rem;
 }
 #ball_1,#ball_2,#ball_3{
     position: absolute;
@@ -77,12 +77,31 @@ main{
     border: none;
     border-radius: 15px;
 }
+#login h1{
+    font-family: "Signika Negative", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+#login p{
+    font-family: "Abel", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+#login button{
+    font-family: "Abel", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1.2rem;
+}
 #input input{
     width: 100%;
     height: 100%;
     padding-left:10px ;
     border-radius: 15px;
     border: none;
+    background-color: white;
+  border: 2px solid #ddc6c6;
 }
 #Submit_form{
     width: 100%;
@@ -142,10 +161,6 @@ main{
 }
 #ball_2::before{
     translate: 6rem 11rem;
-}
-#login{
-    padding: 2rem;
-    gap: 1.5rem;
 }
 #ball_1::after{
     translate: -10.5rem -11rem;
