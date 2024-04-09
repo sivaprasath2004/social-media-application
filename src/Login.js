@@ -6,13 +6,6 @@ import Cookies from "universal-cookie";
 const Login = () => {
   const cookies = new Cookies();
   const navigation = useNavigate();
-  useEffect(() => {
-    let user = cookies.get("user_login_advantages");
-    let name = cookies.get("user_name_advantages");
-    if (user && name) {
-      navigation("/home");
-    }
-  }, []);
   const [values, setValues] = useState({ login: true });
   const login_user = (user) => {
     const date = new Date();
@@ -28,7 +21,6 @@ const Login = () => {
     if (user.Des) {
       cookies.set("user_Description", user.Des, { path: "/", expires: date });
     }
-    console.log("clicked");
     navigation("/home");
   };
   async function handleSubmit() {
@@ -83,8 +75,16 @@ const Login = () => {
   }
   return (
     <main>
-      {values.login ? <div id="ball_1"></div> : <div id="ball_2"></div>}
-      <div id="ball_3"></div>
+      {values.login ? (
+        <>
+          <div id="ball_1"></div> <div id="ball_3"></div>
+        </>
+      ) : (
+        <>
+          <div id="ball_2"></div>
+          <div id="ball_4"></div>
+        </>
+      )}
       {values.loading ? (
         <div id="loading_animation">
           <div className="loader"></div>

@@ -90,7 +90,6 @@ const Followers = ({ onUpdate, notification }) => {
     setNotify(element);
     notification(element);
   }
-  console.log(followers);
   function UserSelected(item, index, condition) {
     return (
       <div key={`parent_tag${index}`} id="User_Profile">

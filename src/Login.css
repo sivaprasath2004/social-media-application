@@ -21,24 +21,23 @@ main{
     backdrop-filter: blur(12px); 
     padding: 4rem 2rem 2rem 2rem;
 }
-#ball_1,#ball_2,#ball_3{
+#ball_1,#ball_2,#ball_3,#ball_4{
     position: absolute;
     z-index: 1;
     height: 30px;
     width: 30px;
     border-radius: 100%;
 }
-#ball_3::before{
+#ball_3::before,#ball_4::before{
     content: "";
     position: absolute;
     height: 50px;
     width: 50px;
     border-radius: 100%;
     background-color: #08ffe6;
-    z-index: 1;
-    translate: 9rem -9rem;
+    z-index: 1; 
 }
-#ball_3::after{
+#ball_3::after,#ball_4::after{
     content: "";
     position: absolute;
     height: 50px;
@@ -46,7 +45,18 @@ main{
     border-radius: 100%;
     background-color: #fc002e;
     z-index: 1;
-    translate: -9rem 8rem;
+}
+#ball_3::before{
+    translate: 7rem -8rem;
+}
+#ball_4::before{
+    translate: 7rem -13rem;
+}
+#ball_4::after{
+    translate: -8rem 11.8rem;
+}
+#ball_3::after{
+   translate: -8rem 6.8rem;
 }
 #ball_2::before,#ball_1::before{
     content: "";
@@ -56,9 +66,7 @@ main{
     background: linear-gradient(#08ffe6,#fcd200);
     z-index: 1;
     border-radius: 100%;
-}
-#ball_1::before{translate: 11rem 7rem;}
-#ball_2::before{translate: 11rem 10rem;}
+} 
 #ball_2::after,#ball_1::after{
     content: "";
     height: 100px;
@@ -68,8 +76,18 @@ main{
     z-index: 1;
     border-radius: 100%;
 }
-#ball_1::after{translate: -15rem -12rem;}
-#ball_2::after{translate: -15rem -15rem;}
+#ball_1::before{
+    translate: 7rem 7rem;
+}
+#ball_2::before{
+    translate: 7rem 12rem;
+}
+#ball_1::after{
+    translate: -11.5rem -12rem;
+}
+#ball_2::after{
+    translate: -11.5rem -16rem;
+}
 #login #input{
     height: 40px;
     width: 250px;
@@ -155,17 +173,11 @@ main{
     90%,
     100% {transform: translate(0) rotate(calc(var(--s,1)*180deg))}
   }
-@media (max-width:555px) {
-#ball_1::before{
-    translate: 6rem 6rem;
-}
-#ball_2::before{
-    translate: 6rem 11rem;
-}
-#ball_1::after{
-    translate: -10.5rem -11rem;
-}
-#ball_2::after{
-    translate: -10.5rem -15rem;
-}
+@media (max-width:385px){
+  #ball_1,#ball_2{
+    display: none;
+  }
+  #login{
+    width: 70%;
+  }
 }

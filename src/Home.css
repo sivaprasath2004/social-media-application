@@ -436,8 +436,9 @@ textarea::-webkit-scrollbar-thumb{
       font-size: 1.2rem;
     }
     .menu_setting{
-  transform: translateX(10%);
+  transform: translateX(0%);
   transition: all 0.3s ease-in; 
+  z-index: 2;
     }
     .hiding{
       transform: translateX(115%);

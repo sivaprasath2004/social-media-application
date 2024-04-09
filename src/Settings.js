@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const Settings = ({ onUpdate, id, user, width, modes }) => {
-  const [checker, setchecker] = useState({ dark: true });
+const Settings = ({ onUpdate, id, user, width, modes, mode }) => {
+  const [checker, setchecker] = useState({ dark: mode });
   useEffect(() => {
     const fetch = async () => {
       let res = await axios.post("http://localhost:5000/userId", {

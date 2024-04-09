@@ -2,29 +2,36 @@ import React, { useState, useEffect } from "react";
 import "./Home.css";
 import "./App.css";
 import DynamicContainer from "./DynamicContainer";
-import Cookies from "universal-cookie";
 import io from "socket.io-client";
 import axios from "axios";
 import Followers from "./followers";
 import { useNavigate } from "react-router-dom";
 import Message from "./Message";
 import Settings from "./Settings";
+import Navigate from "./Navigate";
 const Home = () => {
-  const socket = io("http://localhost:5000");
-  const cookies = new Cookies();
-  let user = cookies.get("user_login_advantages");
-  let name = cookies.get("user_name_advantages");
-  let Des = cookies.get("user_Description") || "Add";
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const [checker, setChecker] = useState({
     dark: true,
     switched: "chats",
-    name: name,
-    Des: Des,
-    id: user,
     results: "none",
     menuBar: false,
   });
+  useEffect(() => {
+    let ret = Navigate();
+    if (ret.red === "no-redirect") {
+      navigate("/login");
+    } else {
+      setChecker((pre) => ({
+        ...pre,
+        name: ret.name,
+        user: ret.user,
+        Des: ret.Des,
+      }));
+    }
+  }, []);
+
+  const socket = io("http://localhost:5000");
   const [width, setwidth] = useState(window.innerWidth);
   useEffect(() => {
     window.addEventListener("resize", () => setwidth(window.innerWidth));
@@ -33,32 +40,35 @@ const Home = () => {
     let res = await axios.post("http://localhost:5000/userId", {
       id: user,
     });
-    const rooms = res.data.RoomId.map((item) => item.id);
-    let users = await axios.post("http://localhost:5000/messagers", {
-      ids: rooms,
-    });
-    setChecker((pre) => ({
-      ...pre,
-      notification: res.data.notification,
-      user_s: rooms,
-      roomid: res.data.RoomId,
-      messagers: users.data,
-      me: res.data,
-    }));
-  }
-  function handleMessage(item) {
-    setChecker((pre) => ({ ...pre, switched: item }));
+    if (res.data?.RoomId?.length > 0) {
+      const rooms = res.data?.RoomId?.map((item) => item.id);
+      let users = await axios.post("http://localhost:5000/messagers", {
+        ids: rooms,
+      });
+      setChecker((pre) => ({
+        ...pre,
+        notification: res.data.notification,
+        user_s: rooms,
+        roomid: res.data.RoomId,
+        messagers: users.data,
+        me: res.data,
+      }));
+    } else {
+      setChecker((pre) => ({
+        ...pre,
+        me: res.data,
+      }));
+    }
   }
   useEffect(() => {
     socket.emit("join", { me: checker.id, name: checker.name }, (err) => {
       console.log(err);
     });
-    if (!user && !name) {
-      navigation("/login");
-    } else {
-      fetch(user);
-    }
-  }, [user, name]);
+    fetch(checker.user);
+  }, []);
+  function handleMessage(item) {
+    setChecker((pre) => ({ ...pre, switched: item }));
+  }
   socket.on("follower", (msg) => {
     if (msg) {
       setTimeout(() => {
@@ -187,14 +197,14 @@ const Home = () => {
         </div>
       </div>
       <div id="profile_container">
-        <h1>{checker?.name[0]}</h1>
+        <h1>{checker?.name ? checker.name[0] : "U"}</h1>
         <div id="User_settings">
           <div>
             <img
               style={{
                 filter:
                   checker.switched === "friends"
-                    ? "brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)"
+                    ? "brightness(0) saturate(100%) invert(24%) sepia(45%) saturate(5956%) hue-rotate(348deg) brightness(91%) contrast(95%)"
                     : " ",
               }}
               src="https://cdn-icons-png.flaticon.com/128/9055/9055030.png"
@@ -215,7 +225,7 @@ const Home = () => {
               style={{
                 filter:
                   checker?.switched === "Add Friend"
-                    ? " brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)"
+                    ? " brightness(0) saturate(100%) invert(24%) sepia(45%) saturate(5956%) hue-rotate(348deg) brightness(91%) contrast(95%)"
                     : " ",
               }}
               src="https://cdn-icons-png.flaticon.com/128/880/880594.png"
@@ -230,7 +240,7 @@ const Home = () => {
               style={{
                 filter:
                   checker?.switched === "settings"
-                    ? " brightness(0) saturate(100%) invert(84%) sepia(73%) saturate(1725%) hue-rotate(108deg) brightness(106%) contrast(105%)"
+                    ? " brightness(0) saturate(100%) invert(24%) sepia(45%) saturate(5956%) hue-rotate(348deg) brightness(91%) contrast(95%)"
                     : "",
               }}
               src="https://cdn-icons-png.flaticon.com/128/15360/15360026.png"
@@ -262,11 +272,11 @@ const Home = () => {
       >
         <div id="my_profile">
           <div id="logo">
-            <h1>{checker?.name[0]}</h1>
+            <h1>{checker?.name?.[0]}</h1>
           </div>
           <div id="my_name">
             <h1>
-              {checker?.name.length > 20
+              {checker?.name?.length > 20
                 ? checker.name.slice(0, 20) + ".."
                 : checker.name}
             </h1>
@@ -357,6 +367,7 @@ const Home = () => {
             id={checker?.me}
             user={checker?.messager}
             width={width}
+            mode={checker.dark}
             modes={handleModes}
           />
         </div>
