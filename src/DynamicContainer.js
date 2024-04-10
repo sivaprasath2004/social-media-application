@@ -2,19 +2,30 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 const DynamicContainer = ({ onUpdate, messages }) => {
-  let socket;
+  const socket = io(
+    "https://social-media-application-backend-woad.vercel.app",
+    {
+      transports: ["websocket", "polling"],
+    }
+  );
   let Id = onUpdate.id;
   let name = onUpdate.name;
   const [checker, setChecker] = useState({ switched: "search", user: "null" });
   const [Following, setFollowing] = useState([]);
   const search = async () => {
-    let res = await axios.post("http://localhost:5000/searchResult", {
-      val: checker.input,
-    });
-    let follow = await axios.post("http://localhost:5000/followings", {
-      id: Id,
-      section: "no",
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend-woad.vercel.app/searchResult",
+      {
+        val: checker.input,
+      }
+    );
+    let follow = await axios.post(
+      "https://social-media-application-backend-woad.vercel.app/followings",
+      {
+        id: Id,
+        section: "no",
+      }
+    );
     setChecker((pre) => ({
       ...pre,
       users: res.data,
@@ -29,7 +40,6 @@ const DynamicContainer = ({ onUpdate, messages }) => {
   }, [checker.input]);
   function handleFollow(id, index) {
     setFollowing((pre) => [...pre, id]);
-    socket = io("http://localhost:5000");
     socket.emit("follow", { me: Id, you: id, name }, (err) => {
       if (err) {
         console.log(err);
@@ -37,10 +47,13 @@ const DynamicContainer = ({ onUpdate, messages }) => {
     });
   }
   async function handleMessagePage(ele) {
-    let res = await axios.post("http://localhost:5000/room", {
-      id: Id,
-      user: ele._id,
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend-woad.vercel.app/room",
+      {
+        id: Id,
+        user: ele._id,
+      }
+    );
     messages(res.data, ele);
   }
   function searchResults(text) {

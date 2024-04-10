@@ -4,9 +4,12 @@ const Settings = ({ onUpdate, id, user, width, modes, mode }) => {
   const [checker, setchecker] = useState({ dark: mode });
   useEffect(() => {
     const fetch = async () => {
-      let res = await axios.post("http://localhost:5000/userId", {
-        id: id,
-      });
+      let res = await axios.post(
+        "https://social-media-application-backend-woad.vercel.app/userId",
+        {
+          id: id,
+        }
+      );
       setchecker({ result: res.data });
     };
     fetch();

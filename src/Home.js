@@ -31,20 +31,32 @@ const Home = () => {
     }
   }, []);
 
-  const socket = io("http://localhost:5000");
+  const socket = io(
+    "https://social-media-application-backend-woad.vercel.app",
+    {
+      transports: ["websocket", "polling"],
+    }
+  );
+
   const [width, setwidth] = useState(window.innerWidth);
   useEffect(() => {
     window.addEventListener("resize", () => setwidth(window.innerWidth));
   }, []);
   async function fetch(user) {
-    let res = await axios.post("http://localhost:5000/userId", {
-      id: user,
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend-woad.vercel.app/userId",
+      {
+        id: user,
+      }
+    );
     if (res.data?.RoomId?.length > 0) {
       const rooms = res.data?.RoomId?.map((item) => item.id);
-      let users = await axios.post("http://localhost:5000/messagers", {
-        ids: rooms,
-      });
+      let users = await axios.post(
+        "https://social-media-application-backend-woad.vercel.app/messagers",
+        {
+          ids: rooms,
+        }
+      );
       setChecker((pre) => ({
         ...pre,
         notification: res.data.notification,
