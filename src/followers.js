@@ -3,7 +3,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import "./followers.css";
 const Followers = ({ onUpdate, notification }) => {
-  const socket = io("http://localhost:8000");
+  const socket = io("https://social-media-application-backend.onrender.com/");
   const [followings, setFollowings] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [checker, setChecker] = useState({
@@ -19,10 +19,13 @@ const Followers = ({ onUpdate, notification }) => {
   let name = onUpdate.name;
   const [notify, setNotify] = useState(onUpdate.notification);
   async function fetch() {
-    let res = await axios.post("http://localhost:8000/followings", {
-      id: Id,
-      section: "follow",
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend.onrender.com/followings",
+      {
+        id: Id,
+        section: "follow",
+      }
+    );
     let arr = res.data.followings;
     setFollowings([res.data.followings]);
     let followers_arr = res.data.followers;
@@ -82,10 +85,13 @@ const Followers = ({ onUpdate, notification }) => {
   }
   async function removeNotification(item) {
     let element = notify.filter((ele) => ele !== item);
-    let res = await axios.post("http://localhost:8000/deleteMessage", {
-      id: Id,
-      item: item,
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend.onrender.com/deleteMessage",
+      {
+        id: Id,
+        item: item,
+      }
+    );
     setNotify(element);
     notification(element);
   }

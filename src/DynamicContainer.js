@@ -2,20 +2,25 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 const DynamicContainer = ({ onUpdate, messages }) => {
-  const socket = io("http://localhost:8000");
+  const socket = io("https://social-media-application-backend.onrender.com");
   let Id = onUpdate.id;
   let name = onUpdate.name;
-  console.log(onUpdate);
   const [checker, setChecker] = useState({ switched: "search", user: "null" });
   const [Following, setFollowing] = useState([]);
   const search = async () => {
-    let res = await axios.post("http://localhost:8000/searchResult", {
-      val: checker.input,
-    });
-    let follow = await axios.post("http://localhost:8000/followings", {
-      id: Id,
-      section: "no",
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend.onrender.com/searchResult",
+      {
+        val: checker.input,
+      }
+    );
+    let follow = await axios.post(
+      "https://social-media-application-backend.onrender.com/followings",
+      {
+        id: Id,
+        section: "no",
+      }
+    );
     setChecker((pre) => ({
       ...pre,
       users: res.data,
@@ -34,15 +39,17 @@ const DynamicContainer = ({ onUpdate, messages }) => {
     setFollowing((pre) => [...pre, id]);
     socket.emit("follow", { me: Id, you: id, name }, (err) => {
       if (err) {
-        console.log(err);
       }
     });
   }
   async function handleMessagePage(ele) {
-    let res = await axios.post("http://localhost:8000/room", {
-      id: Id,
-      user: ele._id,
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend.onrender.com/room",
+      {
+        id: Id,
+        user: ele._id,
+      }
+    );
     messages(res.data, ele);
   }
   function searchResults(text) {

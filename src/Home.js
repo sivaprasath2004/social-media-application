@@ -33,21 +33,27 @@ const Home = ({ name, user, Des }) => {
     fetch(user);
   }, []);
 
-  const socket = io("http://localhost:8000");
+  const socket = io("https://social-media-application-backend.onrender.com");
 
   const [width, setwidth] = useState(window.innerWidth);
   useEffect(() => {
     window.addEventListener("resize", () => setwidth(window.innerWidth));
   }, []);
   async function fetch(user) {
-    let res = await axios.post("http://localhost:8000/userId", {
-      id: user,
-    });
+    let res = await axios.post(
+      "https://social-media-application-backend.onrender.com/userId",
+      {
+        id: user,
+      }
+    );
     if (res.data?.RoomId?.length > 0) {
       const rooms = res.data?.RoomId?.map((item) => item.id);
-      let users = await axios.post("http://localhost:8000/messagers", {
-        ids: rooms,
-      });
+      let users = await axios.post(
+        "https://social-media-application-backend.onrender.com/messagers",
+        {
+          ids: rooms,
+        }
+      );
       console.log(res.data.notification);
       setChecker((pre) => ({
         ...pre,
@@ -111,10 +117,13 @@ const Home = ({ name, user, Des }) => {
       switched: "message",
       notification: element,
     }));
-    await axios.post("http://localhost:8000/deleteMessage", {
-      id: user,
-      item: item,
-    });
+    await axios.post(
+      "https://social-media-application-backend.onrender.com/deleteMessage",
+      {
+        id: user,
+        item: item,
+      }
+    );
   }
   function searchEngine(item, index) {
     return (

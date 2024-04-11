@@ -29,10 +29,13 @@ const Login = () => {
       if (values.email && values.pass) {
         let email_verify = values.email.split("@");
         if (email_verify[1]) {
-          let res = await axios.post("http://localhost:8000/login", {
-            email: values.email,
-            pass: values.pass,
-          });
+          let res = await axios.post(
+            "https://social-media-application-backend.onrender.com/login",
+            {
+              email: values.email,
+              pass: values.pass,
+            }
+          );
           if (res.data.res === "ok") {
             login_user(res.data.user);
           } else {
@@ -52,13 +55,16 @@ const Login = () => {
       ) {
         let arr = values.email.split("@");
         if (arr[1]) {
-          let res = await axios.post("http://localhost:8000/signup", {
-            name: values.name,
-            username: values.username,
-            email: values.email,
-            Des: values.Des,
-            pass: values.pass,
-          });
+          let res = await axios.post(
+            "https://social-media-application-backend.onrender.com/signup",
+            {
+              name: values.name,
+              username: values.username,
+              email: values.email,
+              Des: values.Des,
+              pass: values.pass,
+            }
+          );
           if (res.data.res === "ok") {
             login_user(res.data.user);
           } else {
