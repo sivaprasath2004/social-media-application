@@ -211,6 +211,7 @@ outline: none;
 #user_search #search img{
     filter: invert(0%);
 }
+
 #Back_icon,.Back_icon{height: 30px;width: 30px;cursor: pointer;}
 #close_image{
     padding: 10px;
@@ -290,6 +291,32 @@ input:focus{
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+  .Messager_s{
+    position: relative;
+    border-bottom: 0.1rem solid var(--border);
+    padding: 20px;
+  }
+  .notification_trued{
+    position: absolute;
+    width: 100px;
+    right: 0%;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .notification_trued div{ 
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #10a390; 
+  }
+  .notification_time{
+   color: var(--color);
+   font-size: 1rem; 
+   font-weight: 700;
   }
   #User_Logo{
     height: 50px;

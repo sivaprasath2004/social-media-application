@@ -4,12 +4,7 @@ import io from "socket.io-client";
 import axios from "axios";
 let count = 1;
 const Message = ({ onUpdate, id, user, width }) => {
-  const socket = io(
-    "https://social-media-application-backend-woad.vercel.app",
-    {
-      transports: ["websocket", "polling"],
-    }
-  );
+  const socket = io("http://localhost:8000");
   const [checker, setChecker] = useState({});
   const [messages, setMessages] = useState([]);
   const containerRef = useRef(null);
@@ -32,12 +27,9 @@ const Message = ({ onUpdate, id, user, width }) => {
 
   useEffect(() => {
     const fetch = async () => {
-      let res = await axios.post(
-        "https://social-media-application-backend-woad.vercel.app/chattings",
-        {
-          id: roomid.roomId,
-        }
-      );
+      let res = await axios.post("http://localhost:8000/chattings", {
+        id: roomid.roomId,
+      });
       if (res.data.chats !== undefined) {
         setMessages(res.data.chats);
         count += 1;

@@ -2,36 +2,28 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 const DynamicContainer = ({ onUpdate, messages }) => {
-  const socket = io(
-    "https://social-media-application-backend-woad.vercel.app",
-    {
-      transports: ["websocket", "polling"],
-    }
-  );
+  const socket = io("http://localhost:8000");
   let Id = onUpdate.id;
   let name = onUpdate.name;
+  console.log(onUpdate);
   const [checker, setChecker] = useState({ switched: "search", user: "null" });
   const [Following, setFollowing] = useState([]);
   const search = async () => {
-    let res = await axios.post(
-      "https://social-media-application-backend-woad.vercel.app/searchResult",
-      {
-        val: checker.input,
-      }
-    );
-    let follow = await axios.post(
-      "https://social-media-application-backend-woad.vercel.app/followings",
-      {
-        id: Id,
-        section: "no",
-      }
-    );
+    let res = await axios.post("http://localhost:8000/searchResult", {
+      val: checker.input,
+    });
+    let follow = await axios.post("http://localhost:8000/followings", {
+      id: Id,
+      section: "no",
+    });
     setChecker((pre) => ({
       ...pre,
       users: res.data,
       followers: follow.data,
     }));
-    follow.data.following.map((item) => setFollowing((pre) => [...pre, item]));
+    follow.data?.following?.map((item) =>
+      setFollowing((pre) => [...pre, item])
+    );
   };
   useEffect(() => {
     if (checker.input?.length === 1) {
@@ -47,13 +39,10 @@ const DynamicContainer = ({ onUpdate, messages }) => {
     });
   }
   async function handleMessagePage(ele) {
-    let res = await axios.post(
-      "https://social-media-application-backend-woad.vercel.app/room",
-      {
-        id: Id,
-        user: ele._id,
-      }
-    );
+    let res = await axios.post("http://localhost:8000/room", {
+      id: Id,
+      user: ele._id,
+    });
     messages(res.data, ele);
   }
   function searchResults(text) {
@@ -116,7 +105,7 @@ const DynamicContainer = ({ onUpdate, messages }) => {
                 >
                   Following
                 </button>
-              ) : checker.followers.followers.includes(item._id) ? (
+              ) : checker?.followers?.followers?.includes?.(item?._id) ? (
                 <button key={`user_Follow_Button${index}`} id="followed_butt">
                   Followed
                 </button>

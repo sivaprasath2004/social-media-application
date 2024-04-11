@@ -9,12 +9,13 @@ import { useNavigate } from "react-router-dom";
 import Message from "./Message";
 import Settings from "./Settings";
 import Navigate from "./Navigate";
-const Home = () => {
+const Home = ({ name, user, Des }) => {
   const navigate = useNavigate();
   const [checker, setChecker] = useState({
     dark: true,
     switched: "chats",
     results: "none",
+    id: user,
     menuBar: false,
   });
   useEffect(() => {
@@ -29,34 +30,25 @@ const Home = () => {
         Des: ret.Des,
       }));
     }
+    fetch(user);
   }, []);
 
-  const socket = io(
-    "https://social-media-application-backend-woad.vercel.app",
-    {
-      transports: ["websocket", "polling"],
-    }
-  );
+  const socket = io("http://localhost:8000");
 
   const [width, setwidth] = useState(window.innerWidth);
   useEffect(() => {
     window.addEventListener("resize", () => setwidth(window.innerWidth));
   }, []);
   async function fetch(user) {
-    let res = await axios.post(
-      "https://social-media-application-backend-woad.vercel.app/userId",
-      {
-        id: user,
-      }
-    );
+    let res = await axios.post("http://localhost:8000/userId", {
+      id: user,
+    });
     if (res.data?.RoomId?.length > 0) {
       const rooms = res.data?.RoomId?.map((item) => item.id);
-      let users = await axios.post(
-        "https://social-media-application-backend-woad.vercel.app/messagers",
-        {
-          ids: rooms,
-        }
-      );
+      let users = await axios.post("http://localhost:8000/messagers", {
+        ids: rooms,
+      });
+      console.log(res.data.notification);
       setChecker((pre) => ({
         ...pre,
         notification: res.data.notification,
@@ -73,10 +65,7 @@ const Home = () => {
     }
   }
   useEffect(() => {
-    socket.emit("join", { me: checker.id, name: checker.name }, (err) => {
-      console.log(err);
-    });
-    fetch(checker.user);
+    socket.emit("join", { me: checker.id, name: checker.name }, (err) => {});
   }, []);
   function handleMessage(item) {
     setChecker((pre) => ({ ...pre, switched: item }));
@@ -113,20 +102,44 @@ const Home = () => {
   function handleMenssgae_notificatio(ele) {
     setChecker((pre) => ({ ...pre, notification: ele }));
   }
+  async function removeNotification(item) {
+    let element = checker.notification.filter((ele) => ele.id !== item.id);
+    console.log(element);
+    setChecker((pre) => ({
+      ...pre,
+      messager: item,
+      switched: "message",
+      notification: element,
+    }));
+    await axios.post("http://localhost:8000/deleteMessage", {
+      id: user,
+      item: item,
+    });
+  }
   function searchEngine(item, index) {
     return (
       <div
         key={`User_Details_${index}`}
+        className="Messager_s"
         id="User_Details"
-        onClick={() =>
-          setChecker((pre) => ({
-            ...pre,
-            messager: item,
-            switched: "message",
-          }))
-        }
-        className="messagers_message"
+        onClick={() => {
+          removeNotification(item);
+        }}
       >
+        {checker?.notification.find((ele) => ele.id === item.id) ? (
+          <div className="notification_trued">
+            <div></div>
+            <p className="notification_time">
+              {
+                checker?.notification
+                  .find((ele) => ele.id === item.id)
+                  .time.split("/")[0]
+              }
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
         <div key={`logo_${index}`} id="User_Logo">
           <h1>{item?.name[0]}</h1>
         </div>
@@ -392,7 +405,7 @@ const Home = () => {
           }
         >
           <DynamicContainer
-            onUpdate={{ id: checker.id, name: checker.name }}
+            onUpdate={{ id: user, name: checker.name }}
             messages={messagePageHandle}
           />
         </div>
