@@ -21,6 +21,9 @@ nav{
     background: transparent;
     backdrop-filter: blur(15px);
 }
+html {
+    scroll-behavior: smooth;
+  }  
 nav h1,#about h1{
   font-size:2rem;
   font-family: "Reddit Mono", monospace;
