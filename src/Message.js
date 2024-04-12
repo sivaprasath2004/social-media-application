@@ -17,9 +17,7 @@ const Message = ({ onUpdate, id, user, width }) => {
   }
   const roomid = id.RoomId.find((item) => item.id === user._id);
   useEffect(() => {
-    socket.emit("room", { id: roomid.roomId }, (err) => {
-      console.log(err);
-    });
+    socket.emit("room", { id: roomid.roomId }, (err) => {});
   }, []);
   socket.on("Messgaes", (msg) => {
     setMessages((pre) => [...pre, msg]);
@@ -53,7 +51,7 @@ const Message = ({ onUpdate, id, user, width }) => {
         name: id.name,
         text: checker.input,
       },
-      (msg) => console.log(msg)
+      (msg) => console.log("")
     );
     setChecker((pre) => ({ ...pre, input: "" }));
   }

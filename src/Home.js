@@ -14,9 +14,9 @@ const Home = ({ name, user, Des }) => {
   const [checker, setChecker] = useState({
     dark: true,
     switched: "chats",
-    results: "none",
     id: user,
     menuBar: false,
+    results: "none",
   });
   useEffect(() => {
     let ret = Navigate();
@@ -30,7 +30,7 @@ const Home = ({ name, user, Des }) => {
         Des: ret.Des,
       }));
     }
-    fetch(user);
+    fetch(ret.user);
   }, []);
 
   const socket = io("https://social-media-application-backend.onrender.com");
@@ -46,7 +46,7 @@ const Home = ({ name, user, Des }) => {
         id: user,
       }
     );
-    if (res.data?.RoomId?.length > 0) {
+    if (res.data?.RoomId) {
       const rooms = res.data?.RoomId?.map((item) => item.id);
       let users = await axios.post(
         "https://social-media-application-backend.onrender.com/messagers",
@@ -54,7 +54,6 @@ const Home = ({ name, user, Des }) => {
           ids: rooms,
         }
       );
-      console.log(res.data.notification);
       setChecker((pre) => ({
         ...pre,
         notification: res.data.notification,
@@ -69,6 +68,7 @@ const Home = ({ name, user, Des }) => {
         me: res.data,
       }));
     }
+    setChecker((pre) => ({ ...pre, results: "none" }));
   }
   useEffect(() => {
     socket.emit("join", { me: checker.id, name: checker.name }, (err) => {});
@@ -110,7 +110,6 @@ const Home = ({ name, user, Des }) => {
   }
   async function removeNotification(item) {
     let element = checker.notification.filter((ele) => ele.id !== item.id);
-    console.log(element);
     setChecker((pre) => ({
       ...pre,
       messager: item,
@@ -346,11 +345,11 @@ const Home = ({ name, user, Des }) => {
         </div>
         <div className="border_line"></div>
         <div id="messagers_container">
-          {checker.results === "none"
+          {checker?.results === "none"
             ? checker?.messagers?.map((item, index) =>
                 searchEngine(item, index)
               )
-            : checker.results.map((item, index) => searchEngine(item, index))}
+            : checker?.results?.map((item, index) => searchEngine(item, index))}
         </div>
       </div>
       {checker?.switched === "Add Friend" ? (
