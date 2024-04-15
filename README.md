@@ -1,72 +1,74 @@
-# Getting Started with Create React App
+# Zodia - Social Media Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Zodia is a social media application designed to connect people based on their interests, hobbies, and astrological signs. Users can follow others, engage in chat conversations, and discover new friends with similar interests. This README.md provides an overview of the project structure, setup instructions, and usage guidelines.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
+- React.js
+- Socket.io
+- Node.js
+- Express.js
+- CSS
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- User Authentication: Users can sign up, log in, and manage their profiles securely.
+- Profile Customization: Users can personalize their profiles with information such as bio, profile picture, and interests.
+- Following System: Users can follow other users to see their posts and updates on their feed.
+- Chat Functionality: Users can engage in real-time chat conversations with their followers and followees.
+- Astrological Matching: Users can find and connect with others who share the same zodiac sign or interests.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+Follow these instructions to set up and run the Zodia application on your local machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- Node.js installed on your machine
+- npm (Node Package Manager) or yarn installed
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository:
+   - Front-End
+   ```bash
+   git clone https://github.com/sivaprasath2004/social-media-application.git
+   ```
+   - Back-End
+   ```
+   git clone https://github.com/sivaprasath2004/social-media-application-backend.git
+   ```
+3. Navigate to the project directory:
+   #### Install **Dependencies** for both client and server:
+   - Front-End 
+   ```bash
+   cd social-media-application
+   npm install
+   ```
+   - Bak-End
+   ```bash
+     cd social-media-application-backend
+     npm install
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Configuration
 
-### `npm run eject`
+1. Create a `.env` file in the server directory:
+   ```bash
+   DB=your_mongodb_connection_string
+   ```
+### Running the Application
+- Front-End
+```bash
+ cd social-media-application
+ npm start
+```
+- Back-End
+```bash
+cd social-media-application-backend
+node index.js
+ ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Contributors
+- [sivaprasath2004](https://github.com/sivaprasath2004)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# social-media-application
-# social-media-application
