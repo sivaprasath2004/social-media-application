@@ -3,22 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Abel&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap');
 :root{
-    --background:#1e1a1a;
-    --color:white;
-    --invert:invert(100%);
-    --border:#515151;
-    --uninvert:invert(0%);
-    --input:#4b4848;
-    --transparent:rgb(0 0 0 / 44%);
-    --filter:blur(16px);
-    --Alert_red:#ff000026;
-    --Alert_red_border:3px solid hsla(0, 100%, 50%, 0.271);
-    --Alert_blue:#001fff26;
-    --Alert_blue_border:3px solid #0008ff8c;
-    --box_shadow:0 0px 12px rgb(0 0 0);
-    --you:#ff005a;
-}
-.dark{
     --color: #131313;
     --background: white;
     --invert:invert(0%);
@@ -33,6 +17,22 @@
     --Alert_blue_border:3px solid #0008ff;
     --box_shadow:0 0px 7px rgb(0 0 0);
     --you:#ff005ade;
+}
+.dark{
+     --background:#1e1a1a;
+    --color:white;
+    --invert:invert(100%);
+    --border:#515151;
+    --uninvert:invert(0%);
+    --input:#4b4848;
+    --transparent:rgb(0 0 0 / 44%);
+    --filter:blur(16px);
+    --Alert_red:#ff000026;
+    --Alert_red_border:3px solid hsla(0, 100%, 50%, 0.271);
+    --Alert_blue:#001fff26;
+    --Alert_blue_border:3px solid #0008ff8c;
+    --box_shadow:0 0px 12px rgb(0 0 0);
+    --you:#ff005a;
 }
 #parent_tag_remove h3,#USER_NAME p,#Alert_red p,#Alert_Blue p,#clock,#menu_tabs p,#my_name h2{
     font-family: "Abel", sans-serif;
