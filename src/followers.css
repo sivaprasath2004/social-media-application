@@ -1,48 +1,151 @@
-#navigator{
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-}
-#parent_tag_remove{
-    padding: 40px 10px 10px 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.6rem;
-    width: 251px;
-    border-radius: 12px;
-}
-#parent_tag_remove button{
-  width: 100%;
-  font-size: 1.1rem;
-  background-color: transparent;
-}
-#cancel{
-  padding: 10px;
-  border: none;
-  border-bottom: 0px solid transparent;
-}
-#remove{
-  color: #d52020;
-}
-#nomore_foll{
+/* Followers tab — scoped styles */
+#navigator {
   display: flex;
-    height: 100%;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-}
-#Alert_red,#Alert_Blue{
-  padding: 10px;
-  margin: 10px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  flex-shrink: 0;
 }
-#notifications{
+
+#navigator h1 {
+  flex: 1;
+  text-align: center;
+  padding: .875rem .5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1px;
+  transition: color .2s, border-color .2s;
+  position: relative;
+}
+#navigator h1:hover { color: var(--black); }
+#navigator h1.hovered.color {
+  color: var(--black);
+  border-bottom-color: var(--black);
+}
+
+/* notification dot on tab */
+#navigator #notification::before {
+  content: '';
+  position: absolute;
+  top: .5rem; right: 1.5rem;
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 2px solid var(--white);
+}
+
+/* Alert modal backdrop */
+#Alert {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,.2);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+#parent_tag_remove {
+  width: 280px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem 1.5rem 1rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  overflow: hidden;
+}
+
+#parent_tag_remove #User_Logo {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+#parent_tag_remove h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+#parent_tag_remove h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .825rem;
+  color: var(--gray-500);
+  text-align: center;
+  line-height: 1.5;
+}
+
+#parent_tag_remove button {
+  width: 100%;
+  padding: .75rem;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  border-radius: 0;
+}
+#parent_tag_remove button:hover { background: var(--gray-50); }
+#remove { color: var(--red); }
+#cancel { color: var(--gray-600); }
+
+/* notification banners */
+#Alert_red, #Alert_Blue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1rem;
+  margin: .5rem 1rem;
+  border-radius: var(--r-sm);
+  gap: .75rem;
+}
+#Alert_red  { background: rgba(220,38,38,.06);  border: 1px solid rgba(220,38,38,.2); }
+#Alert_Blue { background: rgba(37,99,235,.06);  border: 1px solid rgba(37,99,235,.2); }
+
+#notifications { display: flex; flex-direction: column; gap: .15rem; }
+#Alert_red h1, #Alert_Blue h1 { font-size: .875rem; color: var(--color); }
+#Alert_red p,  #Alert_Blue p  { font-size: .78rem;  color: var(--gray-500); }
+
+#close_image {
+  width: 16px; height: 16px;
+  cursor: pointer;
+  filter: var(--invert);
+  opacity: .4;
+  flex-shrink: 0;
+  transition: opacity .2s;
+}
+#close_image:hover { opacity: 1; }
+
+/* empty state */
+#nomore_foll {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  color: var(--gray-400);
+  padding: 3rem 1rem;
+  text-align: center;
 }

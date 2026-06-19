@@ -1,114 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import "./followers.css";
+
+// Shared socket — not recreated on render
+const socket = io("https://social-media-application-backend.onrender.com", { autoConnect: true });
+
 const Followers = ({ onUpdate, notification }) => {
-  const socket = io("https://social-media-application-backend.onrender.com/");
+  const Id   = onUpdate.id;
+  const name = onUpdate.name;
+
   const [followings, setFollowings] = useState([]);
-  const [followers, setFollowers] = useState([]);
-  const [checker, setChecker] = useState({
-    Alert: false,
-    user: null,
-    remove: false,
-    letter: null,
+  const [followers,  setFollowers]  = useState([]);
+  const [notify,     setNotify]     = useState(onUpdate.notification);
+  const [checker,    setChecker]    = useState({
+    Alert: false, user: null, letter: null,
     navigate: true,
-    followers_check: true,
-    following_check: true,
+    followers_check: true, following_check: true,
   });
-  let Id = onUpdate.id;
-  let name = onUpdate.name;
-  const [notify, setNotify] = useState(onUpdate.notification);
-  async function fetch() {
-    let res = await axios.post(
-      "https://social-media-application-backend.onrender.com/followings",
-      {
-        id: Id,
-        section: "follow",
-      }
-    );
-    let arr = res.data.followings;
-    setFollowings([res.data.followings]);
-    let followers_arr = res.data.followers;
-    setFollowers([res.data.followers]);
-    setChecker((pre) => ({
-      ...pre,
-      followers_check: typeof followers_arr === "string",
-      following_check: typeof arr === "string",
+
+  const fetchData = useCallback(async () => {
+    const res = await axios.post("https://social-media-application-backend.onrender.com/followings", {
+      id: Id, section: "follow",
+    });
+    setFollowings(typeof res.data.followings === "string" ? [] : res.data.followings);
+    setFollowers( typeof res.data.followers  === "string" ? [] : res.data.followers);
+    setChecker((p) => ({
+      ...p,
+      followers_check: typeof res.data.followers  === "string",
+      following_check: typeof res.data.followings === "string",
     }));
-  }
+  }, [Id]);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  // Socket: join personal room + listen for follower events
   useEffect(() => {
-    fetch();
-  }, []);
-  socket.emit("join", { me: Id, name: name });
-  socket.on("follower", (msg) => {
-    if (msg) {
-      fetch();
-    }
-  });
+    socket.emit("join", { me: Id, name });
+    const handler = (msg) => { if (msg) fetchData(); };
+    socket.on("follower", handler);
+    return () => socket.off("follower", handler); // ✅ cleanup
+  }, [Id, name, fetchData]);
+
   function handle_unfollow(id) {
     if (checker.letter === "Unfollow") {
-      let fil = followings[0].filter((item) => item._id !== id);
-      let arr = [fil, "one"];
-      setFollowings(arr);
+      setFollowings((prev) => prev.filter((i) => i._id !== id));
     } else {
-      let fil = followers[0].filter((item) => item._id !== id);
-      let arr = [fil, "one"];
-      setFollowers(arr);
+      setFollowers((prev) => prev.filter((i) => i._id !== id));
     }
-    socket.emit(
-      "unfollow",
-      { me: Id, you: id, name: name, text: checker.letter },
-      (msg) => {
-        if (msg) {
-        }
-      }
-    );
-    setChecker((pre) => ({
-      ...pre,
-      Alert: false,
-      user: null,
-      remove: false,
-      letter: null,
+    socket.emit("unfollow", { me: Id, you: id, name, text: checker.letter }, () => {});
+    setChecker((p) => ({ ...p, Alert: false, user: null, letter: null }));
+  }
+
+  function unfollow(id, condition) {
+    const list = condition === "following" ? followings : followers;
+    const fin  = list.find((i) => i._id === id);
+    setChecker((p) => ({
+      ...p, Alert: true, user: fin,
+      letter: condition === "following" ? "Unfollow" : "Remove",
     }));
   }
-  function unfollow(id, condition) {
-    let fin;
-    let letter;
-    if (condition === "following") {
-      fin = followings[0].find((item) => item._id === id);
-      letter = "Unfollow";
-    } else {
-      fin = followers[0].find((item) => item._id === id);
-      letter = "Remove";
-    }
-    setChecker((pre) => ({ ...pre, Alert: true, user: fin, letter: letter }));
-  }
+
   async function removeNotification(item) {
-    let element = notify.filter((ele) => ele !== item);
-    let res = await axios.post(
-      "https://social-media-application-backend.onrender.com/deleteMessage",
-      {
-        id: Id,
-        item: item,
-      }
-    );
-    setNotify(element);
-    notification(element);
+    const updated = (notify === "null" ? [] : notify).filter((e) => e !== item);
+    await axios.post("https://social-media-application-backend.onrender.com/deleteMessage", { id: Id, item });
+    setNotify(updated.length ? updated : "null");
+    notification(updated.length ? updated : []);
   }
-  function UserSelected(item, index, condition) {
+
+  function UserRow(item, index, condition) {
     return (
-      <div key={`parent_tag${index}`} id="User_Profile">
-        <div key={`User_Details_${index}`} id="User_Details">
-          <div key={`logo_${index}`} id="User_Logo">
-            <h1>{item?.name?.[0]}</h1>
-          </div>
-          <div key={`name${index}`} id="USER_NAME">
-            <h1>
-              {item?.name?.length > 25
-                ? item.name.slice(0, 25) + ".."
-                : item.name}
-            </h1>
-            <p style={{ fontSize: "0.9rem", fontWeight: 600 }}>{item.Des}</p>
+      <div key={`user_row_${index}`} id="User_Profile">
+        <div id="User_Details">
+          <div id="User_Logo"><h1>{item?.name?.[0]}</h1></div>
+          <div id="USER_NAME">
+            <h1>{item?.name?.length > 22 ? item.name.slice(0, 22) + "…" : item.name}</h1>
+            <p style={{ fontSize: ".78rem", color: "var(--gray-500)" }}>{item.Des}</p>
           </div>
         </div>
         <button
@@ -120,153 +87,89 @@ const Followers = ({ onUpdate, notification }) => {
       </div>
     );
   }
+
+  const showFollowing = checker.navigate;
+  const notifyList    = notify === "null" ? [] : (notify || []);
+
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        overflowY: checker.Alert ? "hidden" : "scroll",
-        overflowX: "hidden",
-      }}
-    >
+    <div style={{
+      width: "100%", height: "100%",
+      display: "flex", flexDirection: "column",
+      overflowY: checker.Alert ? "hidden" : "auto",
+      overflowX: "hidden",
+    }}>
+      {/* Tab nav */}
       <div id="navigator">
         <h1
-          id={
-            notify !== "null"
-              ? notify.some(
-                  (item) =>
-                    item.notify === "following" || item.notify === "unfollow"
-                )
-                ? "notification"
-                : ""
-              : ""
-          }
-          className={checker.navigate ? "hovered color" : "color"}
-          onClick={() => setChecker((pre) => ({ ...pre, navigate: true }))}
-        >{`${
-          !checker.following_check ? followings[0]?.length : 0
-        } Followings`}</h1>
+          id={notifyList.some((i) => i.notify === "following" || i.notify === "unfollow") ? "notification" : ""}
+          className={showFollowing ? "hovered color" : "color"}
+          onClick={() => setChecker((p) => ({ ...p, navigate: true }))}
+        >
+          {followings.length} Following
+        </h1>
         <h1
-          id={
-            notify !== "null"
-              ? notify.some(
-                  (item) =>
-                    item.notify === "remove" || item.notify === "followers"
-                )
-                ? "notification"
-                : ""
-              : ""
-          }
-          className={!checker.navigate ? "hovered color" : "color"}
-          onClick={() => setChecker((pre) => ({ ...pre, navigate: false }))}
-        >{`${
-          !checker.followers_check ? followers[0]?.length : 0
-        } Followers`}</h1>
+          id={notifyList.some((i) => i.notify === "remove" || i.notify === "followers") ? "notification" : ""}
+          className={!showFollowing ? "hovered color" : "color"}
+          onClick={() => setChecker((p) => ({ ...p, navigate: false }))}
+        >
+          {followers.length} Followers
+        </h1>
       </div>
-      {checker.Alert ? (
+
+      {/* Confirm modal */}
+      {checker.Alert && (
         <div id="Alert">
           <div id="parent_tag_remove">
-            <div id="User_Logo">
-              <h1>{checker.user.name[0]}</h1>
-            </div>
-            <h2>{checker.user.name}</h2>
-            <h3>Are you sure do you want to unfollow</h3>
-            <button
-              id="remove"
-              onClick={() => handle_unfollow(checker.user._id)}
-            >
+            <div id="User_Logo"><h1>{checker.user?.name?.[0]}</h1></div>
+            <h2>{checker.user?.name}</h2>
+            <h3>Are you sure you want to {checker.letter?.toLowerCase()} this person?</h3>
+            <button id="remove" onClick={() => handle_unfollow(checker.user._id)}>
               {checker.letter}
             </button>
-            <button
-              id="cancel"
-              onClick={() => setChecker((pre) => ({ ...pre, Alert: false }))}
-            >
-              cancel
+            <button id="cancel" onClick={() => setChecker((p) => ({ ...p, Alert: false }))}>
+              Cancel
             </button>
           </div>
         </div>
-      ) : (
-        <></>
       )}
-      {notify !== "null" ? (
-        notify.map((item, index) =>
-          checker.navigate ? (
-            item.notify !== "remove" && item.notify !== "followers" ? (
-              <div
-                key={`Alert_message_${index}`}
-                id={item.notify === "unfollow" ? "Alert_red" : "Alert_Blue"}
-              >
-                <div key={`notifications_${index}`} id="notifications">
-                  <h1 key={`USERS_name_${index}`}>
-                    {item.name.length > 15
-                      ? item.name.slice(0, 15) + "..."
-                      : item.name}
-                  </h1>
-                  <p key={`alet_notify_${index}`}>
-                    {item.notify === "unfollow"
-                      ? " Unfollowed You"
-                      : " Following"}
-                  </p>
-                </div>
-                <img
-                  key={`close_image_${index}`}
-                  id="close_image"
-                  src="https://cdn-icons-png.flaticon.com/128/32/32178.png"
-                  alt="close_image"
-                  onClick={() => removeNotification(item)}
-                />
-              </div>
-            ) : (
-              <></>
-            )
-          ) : item.notify === "remove" || item.notify === "followers" ? (
-            <div
-              key={`Alert_message_${index}`}
-              id={item.notify === "remove" ? "Alert_red" : "Alert_Blue"}
-            >
-              <div key={`notifications_${index}`} id="notifications">
-                <h1 key={`USERS_name_${index}`}>
-                  {item.name.length > 15
-                    ? item.name.slice(0, 15) + "..."
-                    : item.name}
-                </h1>
-                <p key={`alet_notify_${index}`}>
-                  {item.notify === "remove" ? " Removed" : " Following"}
-                </p>
-              </div>
-              <img
-                key={`close_image_${index}`}
-                id="close_image"
-                src="https://cdn-icons-png.flaticon.com/128/32/32178.png"
-                alt="close_image"
-                onClick={() => removeNotification(item)}
-              />
+
+      {/* Notifications */}
+      {notifyList.map((item, index) => {
+        const show = showFollowing
+          ? item.notify !== "remove" && item.notify !== "followers"
+          : item.notify === "remove" || item.notify === "followers";
+        if (!show) return null;
+        const isRed = item.notify === "unfollow" || item.notify === "remove";
+        return (
+          <div key={`notif_${index}`} id={isRed ? "Alert_red" : "Alert_Blue"}>
+            <div id="notifications">
+              <h1>{item.name?.length > 15 ? item.name.slice(0, 15) + "…" : item.name}</h1>
+              <p>
+                {item.notify === "unfollow" ? " unfollowed you"
+                 : item.notify === "remove"  ? " removed you"
+                 : " started following you"}
+              </p>
             </div>
-          ) : (
-            <></>
-          )
-        )
-      ) : (
-        <></>
-      )}
-      {checker.navigate ? (
-        !checker.following_check && followings[0]?.length > 0 ? (
-          followings[0]?.map((item, index) =>
-            UserSelected(item, index, "following")
-          )
-        ) : (
-          <h1 id="nomore_foll">No more followings</h1>
-        )
-      ) : !checker.followers_check && followers[0]?.length > 0 ? (
-        followers[0]?.map((item, index) =>
-          UserSelected(item, index, "follower")
-        )
-      ) : (
-        <h1 id="nomore_foll">No more followers</h1>
-      )}
+            <img
+              id="close_image"
+              src="https://cdn-icons-png.flaticon.com/128/32/32178.png"
+              alt="dismiss"
+              onClick={() => removeNotification(item)}
+            />
+          </div>
+        );
+      })}
+
+      {/* Lists */}
+      {showFollowing
+        ? followings.length
+          ? followings.map((item, i) => UserRow(item, i, "following"))
+          : <h1 id="nomore_foll">No followings yet</h1>
+        : followers.length
+          ? followers.map((item, i) => UserRow(item, i, "follower"))
+          : <h1 id="nomore_foll">No followers yet</h1>}
     </div>
   );
 };
+
 export default Followers;

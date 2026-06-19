@@ -1,184 +1,127 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "./Login.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+
+// ✅ Field moved OUTSIDE - no remount issue
+const Field = ({ placeholder, type = "text", fieldRef }) => (
+  <div id="input">
+    <input
+      type={type}
+      placeholder={placeholder}
+      ref={fieldRef}
+      onKeyDown={(e) => e.key === "Enter" && e.currentTarget.form?.requestSubmit()}
+    />
+  </div>
+);
+
 const Login = () => {
   const cookies = new Cookies();
   const navigation = useNavigate();
-  const [values, setValues] = useState({ login: true });
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // ✅ useRef for all fields - no re-render on typing
+  const nameRef = useRef();
+  const usernameRef = useRef();
+  const desRef = useRef();
+  const emailRef = useRef();
+  const passRef = useRef();
+
   const login_user = (user) => {
     const date = new Date();
     date.setDate(date.getDate() + 15);
-    cookies.set("user_login_advantages", user._id, {
-      path: "/",
-      expires: date,
-    });
-    cookies.set("user_name_advantages", user.user_name, {
-      path: "/",
-      expires: date,
-    });
+    cookies.set("user_login_advantages", user._id, { path: "/", expires: date });
+    cookies.set("user_name_advantages", user.user_name, { path: "/", expires: date });
     if (user.Des) {
       cookies.set("user_Description", user.Des, { path: "/", expires: date });
     }
     navigation("/home");
   };
+
   async function handleSubmit() {
-    setValues((pre) => ({ ...pre, error: undefined, loading: true }));
-    if (values.login) {
-      if (values.email && values.pass) {
-        let email_verify = values.email.split("@");
-        if (email_verify[1]) {
-          let res = await axios.post(
-            "https://social-media-application-backend.onrender.com/login",
-            {
-              email: values.email,
-              pass: values.pass,
-            }
-          );
-          if (res.data.res === "ok") {
-            login_user(res.data.user);
-          } else {
-            setValues((pre) => ({ ...pre, error: res.data.user }));
-          }
+    setError("");
+    setLoading(true);
+
+    const email = emailRef.current?.value;
+    const pass = passRef.current?.value;
+
+    if (isLogin) {
+      if (email && pass) {
+        const parts = email.split("@");
+        if (parts[1]) {
+          const res = await axios.post("https://social-media-application-backend.onrender.com/login", { email, pass });
+          if (res.data.res === "ok") login_user(res.data.user);
+          else setError(res.data.user);
         } else {
-          setValues((pre) => ({ ...pre, error: "Invalid Mail Address" }));
-        }
-      }
-    } else {
-      if (
-        values.name &&
-        values.username &&
-        values.email &&
-        values.pass &&
-        values.Des
-      ) {
-        let arr = values.email.split("@");
-        if (arr[1]) {
-          let res = await axios.post(
-            "https://social-media-application-backend.onrender.com/signup",
-            {
-              name: values.name,
-              username: values.username,
-              email: values.email,
-              Des: values.Des,
-              pass: values.pass,
-            }
-          );
-          if (res.data.res === "ok") {
-            login_user(res.data.user);
-          } else {
-            setValues((pre) => ({ ...pre, error: res.data.user }));
-          }
-        } else {
-          setValues((pre) => ({ ...pre, error: "Invalid Mail Address" }));
+          setError("Invalid email address");
         }
       } else {
-        setValues((pre) => ({ ...pre, error: "Fill the details" }));
+        setError("Please fill in all fields");
+      }
+    } else {
+      const name = nameRef.current?.value;
+      const username = usernameRef.current?.value;
+      const Des = desRef.current?.value;
+
+      if (name && username && email && pass && Des) {
+        const parts = email.split("@");
+        if (parts[1]) {
+          const res = await axios.post("https://social-media-application-backend.onrender.com/signup", {
+            name, username, email, Des, pass,
+          });
+          if (res.data.res === "ok") login_user(res.data.user);
+          else setError(res.data.user);
+        } else {
+          setError("Invalid email address");
+        }
+      } else {
+        setError("Please fill in all fields");
       }
     }
-    setValues((pre) => ({ ...pre, loading: undefined }));
+
+    setLoading(false);
   }
+
   return (
     <main>
-      {values.login ? (
-        <>
-          <div id="ball_1"></div> <div id="ball_3"></div>
-        </>
-      ) : (
-        <>
-          <div id="ball_2"></div>
-          <div id="ball_4"></div>
-        </>
-      )}
-      {values.loading ? (
+      {loading && (
         <div id="loading_animation">
-          <div className="loader"></div>
-          <p style={{ fontSize: "1.3rem", color: "#f9ff00" }}>please wait...</p>
+          <div className="loader" />
+          <p>Please wait…</p>
         </div>
-      ) : (
-        <></>
       )}
-      <div
-        id="login"
-        style={{
-          padding: values.login ? "padding: 4rem 2rem 2rem 2rem" : "2rem",
-        }}
-      >
-        <h1>{values.login ? "Sign In" : "Sign Up"}</h1>
-        {!values.login ? (
+
+      <div id="login">
+        <h1>{isLogin ? "Welcome back" : "Create account"}</h1>
+        <p className="login-subtitle">
+          {isLogin ? "Sign in to your Zodia account" : "Join the Zodia community today"}
+        </p>
+
+        {!isLogin && (
           <>
-            <div id="input">
-              <input
-                type="text"
-                onChange={(e) =>
-                  setValues((pre) => ({ ...pre, name: e.target.value }))
-                }
-                placeholder="name"
-              />
-            </div>
-            <div id="input">
-              <input
-                type="text"
-                onChange={(e) =>
-                  setValues((pre) => ({ ...pre, username: e.target.value }))
-                }
-                placeholder="User name"
-              />
-            </div>
-            <div id="input">
-              <input
-                type="text"
-                onChange={(e) =>
-                  setValues((pre) => ({ ...pre, Des: e.target.value }))
-                }
-                placeholder="Description"
-              />
-            </div>
+            <Field placeholder="Full name" fieldRef={nameRef} />
+            <Field placeholder="Username" fieldRef={usernameRef} />
+            <Field placeholder="Bio / Description" fieldRef={desRef} />
           </>
-        ) : (
-          <></>
         )}
-        <div id="input">
-          <input
-            type="text"
-            onChange={(e) =>
-              setValues((pre) => ({ ...pre, email: e.target.value }))
-            }
-            placeholder="E-mail"
-          />
-        </div>
-        <div id="input">
-          <input
-            type="text"
-            onChange={(e) =>
-              setValues((pre) => ({ ...pre, pass: e.target.value }))
-            }
-            placeholder="password"
-          />
-        </div>
+
+        <Field placeholder="Email address" fieldRef={emailRef} />
+        <Field placeholder="Password" type="password" fieldRef={passRef} />
+
         <div id="Submit_form">
-          <p style={{ color: "red", textAlign: "center", fontSize: ".8rem" }}>
-            {values.error ? values.error : " "}
-          </p>
+          <p className="error-msg">{error || " "}</p>
+          <button onClick={handleSubmit}>
+            {isLogin ? "Sign In →" : "Create Account →"}
+          </button>
           <p>
-            {values.login
-              ? "I don't have a account "
-              : "Already have a account "}
-            <span
-              style={{
-                textDecoration: "underline",
-                color: "blue",
-                cursor: "pointer",
-              }}
-              onClick={() => setValues({ login: !values.login })}
-            >
-              {values.login ? "Sign Up?" : "Sign In?"}
+            {isLogin ? "Don't have an account? " : "Already have an account? "}
+            <span onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? "Sign Up" : "Sign In"}
             </span>
           </p>
-          <button onClick={() => handleSubmit()}>
-            {values.login ? "Sign In" : "Sign Up"}
-          </button>
         </div>
       </div>
     </main>

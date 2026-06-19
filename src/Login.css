@@ -1,183 +1,193 @@
-main{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    background-color: white;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+main {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
 }
-#login{
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: rgb(255 255 255 / 9%);
-    gap: 1rem;
-    border: 4px solid #e5e4e4;
-    border-radius: 15px;
-    backdrop-filter: blur(12px); 
-    padding: 4rem 2rem 2rem 2rem;
+
+/* Subtle geometric background */
+main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,0,0,.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(0,0,0,.03) 0%, transparent 50%);
+  pointer-events: none;
 }
-#ball_1,#ball_2,#ball_3,#ball_4{
-    position: absolute;
-    z-index: 1;
-    height: 30px;
-    width: 30px;
-    border-radius: 100%;
+
+/* Hide old ball decorations */
+#ball_1, #ball_2, #ball_3, #ball_4 { display: none !important; }
+
+/* ── CARD ── */
+#login {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  gap: 0;
+  margin: 1.5rem;
 }
-#ball_3::before,#ball_4::before{
-    content: "";
-    position: absolute;
-    height: 50px;
-    width: 50px;
-    border-radius: 100%;
-    background-color: #08ffe6;
-    z-index: 1; 
+
+/* Brand at top */
+#login::before {
+  content: 'Zodia';
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--black);
+  letter-spacing: -.02em;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
 }
-#ball_3::after,#ball_4::after{
-    content: "";
-    position: absolute;
-    height: 50px;
-    width: 50px;
-    border-radius: 100%;
-    background-color: #fc002e;
-    z-index: 1;
+
+#login h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: var(--black);
+  margin-bottom: .4rem;
 }
-#ball_3::before{
-    translate: 7rem -8rem;
+
+.login-subtitle {
+  font-size: .875rem;
+  color: var(--gray-500);
+  margin-bottom: 1.75rem;
 }
-#ball_4::before{
-    translate: 7rem -13rem;
+
+/* ── INPUTS ── */
+#input {
+  width: 100%;
+  margin-bottom: .875rem;
 }
-#ball_4::after{
-    translate: -8rem 11.8rem;
+
+#input input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  background: var(--gray-50);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  color: var(--black);
+  transition: border-color .2s, background .2s, box-shadow .2s;
 }
-#ball_3::after{
-   translate: -8rem 6.8rem;
+#input input:focus {
+  border-color: var(--black);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(17,17,17,.06);
 }
-#ball_2::before,#ball_1::before{
-    content: "";
-    height: 100px;
-    width: 100px;
-    position: absolute;
-    background: linear-gradient(#08ffe6,#fcd200);
-    z-index: 1;
-    border-radius: 100%;
-} 
-#ball_2::after,#ball_1::after{
-    content: "";
-    height: 100px;
-    width: 100px;
-    position: absolute;
-    background: linear-gradient(#fcd200, #fc002e);
-    z-index: 1;
-    border-radius: 100%;
+#input input::placeholder { color: var(--gray-400); }
+
+/* ── SUBMIT AREA ── */
+#Submit_form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: .75rem;
+  margin-top: .25rem;
 }
-#ball_1::before{
-    translate: 7rem 7rem;
+
+#Submit_form p {
+  font-size: .8rem;
+  color: var(--gray-500);
+  text-align: center;
 }
-#ball_2::before{
-    translate: 7rem 12rem;
+
+#Submit_form p span {
+  color: var(--black) !important;
+  text-decoration: underline !important;
+  font-weight: 700;
+  cursor: pointer;
 }
-#ball_1::after{
-    translate: -11.5rem -12rem;
+
+.error-msg {
+  color: var(--red) !important;
+  font-size: .8rem;
+  min-height: 1.1em;
+  font-weight: 600;
 }
-#ball_2::after{
-    translate: -11.5rem -16rem;
+
+#Submit_form button {
+  height: 48px;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  width: 100%;
 }
-#login #input{
-    height: 40px;
-    width: 250px;
-    background-color: white;
-    border: none;
-    border-radius: 15px;
+#Submit_form button:hover { background: var(--gray-700); transform: translateY(-1px); }
+#Submit_form button:active { transform: translateY(0); }
+
+/* ── LOADER ── */
+#loading_animation {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(8px);
 }
-#login h1{
-    font-family: "Signika Negative", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
+
+#loading_animation p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--black) !important;
 }
-#login p{
-    font-family: "Abel", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-}
-#login button{
-    font-family: "Abel", sans-serif;
-    font-weight: 900;
-    font-style: normal;
-    font-size: 1.2rem;
-}
-#input input{
-    width: 100%;
-    height: 100%;
-    padding-left:10px ;
-    border-radius: 15px;
-    border: none;
-    background-color: white;
-  border: 2px solid #ddc6c6;
-}
-#Submit_form{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-#Submit_form button{
-    height: 40px;
-    width: 150px;
-    background-color: black;
-    color: white;
-    border: none;
-    border-radius: 15px;
-}
-#loading_animation{
-    position: absolute;
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    background-color: rgb(0 0 0 / 47%);
-    box-shadow: 0 2rem 2px 100rem rgb(0 0 0 / 47%);
-}
+
 .loader {
-    width: 50px;
-    aspect-ratio: 1;
-    display: grid;
-  }
-  .loader:before,
-  .loader:after {
-    content: "";
-    grid-area: 1/1;
-    border-radius: 50%;
-    background: #f03355;
-    -webkit-mask:repeating-linear-gradient(#000 0 5px,#0000 0 10px);
-    animation: l35 1.5s infinite;
-  }
-  .loader:after {
-    -webkit-mask:repeating-linear-gradient(#0000 0 5px,#000 0 10px);
-    --s:-1;
-  }
-  @keyframes l35 {
-    0%,
-    10% {transform: translate(0) rotate(0)}
-    35% {transform: translate(calc(var(--s,1)*50%)) rotate(0)}
-    66% {transform: translate(calc(var(--s,1)*50%)) rotate(calc(var(--s,1)*180deg))}
-    90%,
-    100% {transform: translate(0) rotate(calc(var(--s,1)*180deg))}
-  }
-@media (max-width:385px){
-  #ball_1,#ball_2{
-    display: none;
-  }
-  #login{
-    width: 70%;
-  }
+  width: 44px; height: 44px;
+  display: grid;
+}
+.loader::before, .loader::after {
+  content: '';
+  grid-area: 1/1;
+  border-radius: 50%;
+  background: var(--black);
+  -webkit-mask: repeating-linear-gradient(#000 0 5px, #0000 0 10px);
+  animation: l35 1.5s infinite;
+}
+.loader::after {
+  -webkit-mask: repeating-linear-gradient(#0000 0 5px, #000 0 10px);
+  --s: -1;
+}
+@keyframes l35 {
+  0%,10%  { transform: translate(0) rotate(0); }
+  35%     { transform: translate(calc(var(--s,1)*50%)) rotate(0); }
+  66%     { transform: translate(calc(var(--s,1)*50%)) rotate(calc(var(--s,1)*180deg)); }
+  90%,100%{ transform: translate(0) rotate(calc(var(--s,1)*180deg)); }
+}
+
+@media (max-width: 440px) {
+  #login { margin: 1rem; padding: 2rem 1.5rem; }
 }

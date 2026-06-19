@@ -1,4 +1,49 @@
-*{
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:    #111111;
+  --gray-900: #1a1a1a;
+  --gray-700: #333333;
+  --gray-600: #555555;
+  --gray-500: #777777;
+  --gray-400: #999999;
+  --gray-300: #cccccc;
+  --gray-200: #e0e0e0;
+  --gray-100: #f2f2f2;
+  --gray-50:  #f8f8f8;
+  --white:    #ffffff;
+  --border:   #e4e4e4;
+  --green:    #16a34a;
+  --green-bg: #dcfce7;
+  --red:      #dc2626;
+  --red-bg:   #fee2e2;
+  --blue:     #2563eb;
+  --blue-bg:  #dbeafe;
+  --r-sm:     8px;
+  --r:        12px;
+  --r-lg:     18px;
+  --r-pill:   999px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
+  --shadow:    0 4px 20px rgba(0,0,0,.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.12);
 }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar { width: 4px; height: 4px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+
+input:focus, textarea:focus { outline: none; }
